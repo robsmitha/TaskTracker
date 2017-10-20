@@ -1,0 +1,56 @@
+<?php
+
+	include "../DAL/accounts.php";
+	if($_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$returnValue = true;
+		if($_POST['exampleInputEmail1'] == "")
+		{
+			$returnValue = false;
+		}
+		else
+		{
+			$email = $_POST['exampleInputEmail1'];
+		}
+		if($_POST['exampleInputPassword1'] == "")
+		{
+			$returnValue = false;
+		}
+		else
+		{
+			$password = $_POST['exampleInputPassword1'];
+		}
+		if($returnValue)
+		{
+			$accountList = Accounts::search("","","",$email, $password,"","");
+			if($accountList != "")
+			{
+				foreach($accountList as $acct)
+				{
+					$accountid = $acct->getAccountID();
+					$firstname = $acct->getFirstName();
+					$lastname = $acct->getLastName();
+					$email = $acct->getEmail();
+					$password = $acct->getPassword();
+					$roleid = $acct->getRoleID();
+					$teamid = $acct->getTeamID();
+				}
+				session_start();
+				$_SESSION["LoggedIn"] = true;
+				$_SESSION["FirstName"] = $firstname;
+				$_SESSION["AccountID"] = $accountid;
+				header("location:../index.php?msg=success");
+			}
+			else
+			{
+				header("location:../login.php?msg=noresults");
+			}
+		}
+		else
+		{
+			header("location:../login.php?msg=validate");
+		}
+	}
+
+
+?>
