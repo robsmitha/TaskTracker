@@ -22,7 +22,7 @@
 		}
 		if($returnValue)
 		{
-			$accountList = Accounts::search("","","",$email, $password,"","");
+			$accountList = Accounts::search("","","",$email, $password,"","","","","","","");
 			if($accountList != "")
 			{
 				foreach($accountList as $acct)
@@ -39,7 +39,7 @@
 				$_SESSION["LoggedIn"] = true;
 				$_SESSION["FirstName"] = $firstname;
 				$_SESSION["AccountID"] = $accountid;
-				header("location:../index.php?msg=success");
+				header("location:../index.php");
 			}
 			else
 			{

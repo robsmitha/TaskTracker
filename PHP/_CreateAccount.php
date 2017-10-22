@@ -51,22 +51,83 @@
 				$confirmPassword = $_POST['exampleConfirmPassword'];
 			}
 		}
+		//img url
+        if($_POST['dataImageURL'] == "")
+        {
+            $returnValue = false;
+        }
+        else
+        {
+            $imgurl = $_POST['dataImageURL'];
+        }
+        //location
+        if($_POST['dataLocation'] == "")
+        {
+            $returnValue = false;
+        }
+        else
+        {
+            $location = $_POST['dataLocation'];
+        }
+        //dob
+        if($_POST['dataDOB'] == "")
+        {
+            $returnValue = false;
+        }
+        else
+        {
+            $dateofbirth = $_POST['dataDOB'];
+            //$dateofbirth = date_create_from_format('d/M/Y:H:i:s', $s);
+        }
+        //bio is optional
+        $bio = $_POST['dataBio'];
+
 		if($returnValue)
 		{
-			$account = new Accounts();
-			$account->SetAccountID(0);	//new acct
-			$account->SetFirstName($name);
-			$account->SetLastName($lastname);
-			$account->SetEmail($email);
-			$account->SetPassword($password);
-			$account->SetRoleID(0);		//default
-			$account->SetTeamID(0);		//default
-			$account->save();
-			header("location:../login.php");
+		    session_start();
+            if(isset($_SESSION["AccountID"]))
+            {
+                $account = new Accounts();
+                $account->setAccountID($_SESSION["AccountID"]);
+                $account->setFirstName($name);
+                $account->setLastName($lastname);
+                $account->setEmail($email);
+                $account->setPassword($password);
+                $account->setBio($bio);
+                $account->setRoleID(0);
+                $account->setTeamID(0);
+                $account->setImgURL($imgurl);
+                $account->setDateOfBirth($dateofbirth);
+                $account->setLocation($location);
+                $account->save();
+                $transferid = $_SESSION["AccountID"];
+                header("location:../ViewAccount.php?accountid=$transferid");
+            }
+            else
+            {
+                $account = new Accounts();
+                $account->setAccountID(0);
+                $account->setFirstName($name);
+                $account->setLastName($lastname);
+                $account->setEmail($email);
+                $account->setPassword($password);
+                $account->setBio($bio);
+                $account->setRoleID(0);
+                $account->setTeamID(0);
+                $account->setImgURL($imgurl);
+                $account->setDateOfBirth($dateofbirth);
+                $account->setLocation($location);
+                date_default_timezone_set('America/New_York');
+                $createdate = date('Y-m-d');
+                $account->setCreateDate($createdate);
+                $account->save();
+                header("location:../login.php");
+            }
+
 		}
 		else
 		{
-			header("location:../register.php?msg=validate");
+			header("location:../CreateAccount.php?msg=validate");
 		}
 	}
 

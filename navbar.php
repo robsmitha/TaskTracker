@@ -1,7 +1,10 @@
-  <!-- Navigation-->
+<?php
+$accountid = $_SESSION["AccountID"];
+?>
+<!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.php">
-		<i class="fa fa-tasks"></i> TaskTracker
+		<i class="fa fa-cloud"></i> TaskTracker
 		<!--<img src="tasktrackerlogo.png" style="height: 50px;">-->
 	</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +18,12 @@
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Update Account Information">
+              <a class="nav-link" href="ViewAccount.php?accountid=<?php echo $accountid ?>">
+                  <i class="fa fa-fw fa-user"></i>
+                  <span class="nav-link-text">My Account</span>
+              </a>
+          </li>
 		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
 		  <a class="nav-link" href="CreateTask.php">
 			<i class="fa fa-fw fa-plus-square-o"></i>
@@ -27,6 +36,12 @@
 			<span class="nav-link-text">Create Project</span>
 		  </a>
 		</li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+              <a class="nav-link" href="CreateRole.php">
+                  <i class="fa fa-fw fa-user-plus"></i>
+                  <span class="nav-link-text">Create Role</span>
+              </a>
+          </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

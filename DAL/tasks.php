@@ -355,4 +355,26 @@ class Tasks {
 			die("The query yielded zero results.No rows found.");
 		}
 	}
+
+    public static function loadbyprojectid($paramProjectID) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_tasks_LoadByProjectID(?)');
+        $stmt->bind_param('i', $paramProjectID);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if (!$result) die($conn->error);
+        if ($result->num_rows > 0) {
+            $arr = array();
+            while ($row = $result->fetch_assoc()) {
+                $tasks = new Tasks($row['TaskID'],$row['TaskName'],$row['Description'],$row['AssigneeAccountID'],$row['ReporterAccountID'],$row['StatusTypeID'],$row['TaskTypeID'],$row['PriorityTypeID'],$row['ProjectID'],$row['CreateDate'],$row['CloseDate'],$row['ReopenDate']);
+                $arr[] = $tasks;
+            }
+            return $arr;
+        }
+        else {
+            die("The query yielded zero results.No rows found.");
+        }
+    }
 }

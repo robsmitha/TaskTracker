@@ -14,42 +14,6 @@ $ReporterAccountID = $_SESSION["AccountID"];
 		{
 			$taskname = $_POST['TaskName'];
 		}
-		//task type
-		if($_POST['ddlTaskType'] == 0)
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$tasktype = $_POST['ddlTaskType'];
-		}
-		//ddlPriorityType
-		if($_POST['ddlPriorityType'] == 0)
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$PriorityTypeID = $_POST['ddlPriorityType'];
-		}
-		//ddlAssignee
-		if($_POST['ddlAssignee'] == 0)
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$AssigneeAccountID = $_POST['ddlAssignee'];
-		}
-		//ddlProjects
-		if($_POST['ddlProjects'] == 0)
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$ProjectID = $_POST['ddlProjects'];
-		}
 		//txtDescription
 		if($_POST['txtDescription'] == "")
 		{
@@ -59,29 +23,55 @@ $ReporterAccountID = $_SESSION["AccountID"];
 		{
 			$description = $_POST['txtDescription'];
 		}
-		
+        $tasktype = $_POST['ddlTaskType'];
+		$PriorityTypeID = $_POST['ddlPriorityType'];
+        $AssigneeAccountID = $_POST['ddlAssignee'];
+        $ProjectID = $_POST['ddlProjects'];
 		if($returnValue)
 		{
-			$task = new Tasks();
-			$task->setTaskID(0);	//new task
-			$task->setTaskName($taskname);
-			$task->setDescription($description);
-			$task->setAssigneeAccountID($AssigneeAccountID);
-			$task->setReporterAccountID($ReporterAccountID);
-			$task->setStatusTypeID(1);		//set to open as default	
-			$task->setTaskTypeID($tasktype);			
-			$task->setPriorityTypeID($PriorityTypeID);			
-			$task->setProjectID($ProjectID);	
-			//record dates	
-			date_default_timezone_set('America/New_York');
+            if(isset($_POST["edittaskid"]) && $_POST["edittaskid"] > 0) {
+                if (is_numeric($_POST["edittaskid"])) {
+                    $tid = $_POST["edittaskid"];
+                    $task = new Tasks();
+                    $task->setTaskID($tid);	//new task
+                    $task->setTaskName($taskname);
+                    $task->setDescription($description);
+                    $task->setAssigneeAccountID($AssigneeAccountID);
+                    $task->setReporterAccountID($_POST["edittaskreporteraccountid"]);
+                    $task->setStatusTypeID($_POST["edittaskstatustypeid"]);		//set to open as default
+                    $task->setTaskTypeID($tasktype);
+                    $task->setPriorityTypeID($PriorityTypeID);
+                    $task->setProjectID($ProjectID);
+                    $task->setCreateDate($_POST["edittaskcreatedate"]);
+                    $task->setCloseDate($_POST["edittaskclosedate"]);
+                    $task->setReopenDate($_POST["edittaskreopendate"]);
+                    $task->save();
+                    header("location:../index.php?msg=success");
+                }
+            }
+            else{
+                $task = new Tasks();
+                $task->setTaskID(0);	//new task
+                $task->setTaskName($taskname);
+                $task->setDescription($description);
+                $task->setAssigneeAccountID($AssigneeAccountID);
+                $task->setReporterAccountID($ReporterAccountID);
+                $task->setStatusTypeID(1);		//set to open as default
+                $task->setTaskTypeID($tasktype);
+                $task->setPriorityTypeID($PriorityTypeID);
+                $task->setProjectID($ProjectID);
+                //record dates
+                date_default_timezone_set('America/New_York');
 
-			// Then call the date functions
-			$date = date('Y-m-d H:i:s');
-			$task->setCreateDate($date);
-			//$task->setCloseDate(0);
-			//$task->setReopenDate(0);			
-			$task->save();
-			header("location:../index.php?msg=success");
+                // Then call the date functions
+                $date = date('Y-m-d H:i:s');
+                $task->setCreateDate($date);
+                //$task->setCloseDate(0);
+                //$task->setReopenDate(0);
+                $task->save();
+                header("location:../index.php?msg=success");
+            }
+
 		}
 		else
 		{

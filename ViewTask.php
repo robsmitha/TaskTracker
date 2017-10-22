@@ -47,6 +47,7 @@ $tasktype->load($task->getTaskTypeID());
 include "DAL/projects.php";
 $project = new Projects();
 $project->load($task->getProjectID());
+$projectid = $project->getProjectId();
 
 //Account
 include "DAL/accounts.php";
@@ -59,22 +60,7 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>TaskTracker - Task ID: <?php echo $task->getTaskID(); ?></title>
-  <!-- Bootstrap core CSS-->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
-</head>
+<?php include "head.php" ?>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
@@ -87,7 +73,12 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
         <li class="breadcrumb-item">
           <a href="index.php">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">View Task <?php echo $task->getTaskID(); ?></li>
+          <li class="breadcrumb-item">
+              <a href="ViewProject.php?projectid=<?php echo $projectid ?>">
+                  <?php echo $project->getProjectName(); ?>
+              </a>
+          </li>
+        <li class="breadcrumb-item active"><?php echo $task->getTaskName(); ?></li>
       </ol>
 
       <div class="row">
@@ -101,6 +92,7 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 						</div>
 						<div class="col-sm-2">
 						<div class="btn-group pull-right">
+                            <a class="btn btn-secondary" href="CreateTask.php?cmd=edit&taskid=<?php echo $taskid ?>">Edit</a>
 							<?php
 							$statustypeid = $task->getStatusTypeID();
 								switch($statustypeid)
@@ -161,14 +153,19 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 			</div>
         </div>
         <div class="col-lg-4">
-			<b><i class="fa fa-users"></i> People</b><br>
-			<b>Reported By: </b><?php echo $reporter->getFirstName(). " " .$reporter->getLastName(); ?><br>
-			<b>Assigned To: </b><?php echo $assignee->getFirstName(). " " .$assignee->getLastName();  ?><br>
-			<hr>
-			<b><i class="fa fa-calendar"></i> Dates</b><br>
-			<b>Create Date: </b><?php echo $task->getCreateDate(); ?><br>
-			<?php if($task->getReopenDate() != 0) echo "<b>Reopen Date: </b>".$task->getReopenDate()."<br>"; ?>
-			<?php if($task->getCloseDate() != 0) echo "<b>Close Date: </b>".$task->getCloseDate()."<br>"; ?>
+            <div class="card bg-light">
+                <div class="card-body">
+                    <b><i class="fa fa-users"></i> People</b><br>
+                    <b>Reported By: </b><?php echo $reporter->getFirstName(). " " .$reporter->getLastName(); ?><br>
+                    <b>Assigned To: </b><?php echo $assignee->getFirstName(). " " .$assignee->getLastName();  ?><br>
+                    <hr>
+                    <b><i class="fa fa-calendar"></i> Dates</b><br>
+                    <b>Create Date: </b><?php echo $task->getCreateDate(); ?><br>
+                    <?php if($task->getReopenDate() != 0) echo "<b>Reopen Date: </b>".$task->getReopenDate()."<br>"; ?>
+                    <?php if($task->getCloseDate() != 0) echo "<b>Close Date: </b>".$task->getCloseDate()."<br>"; ?>
+                </div>
+            </div>
+
         </div>
       </div>
       
@@ -178,21 +175,7 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 <!-- /.content-wrapper-->
 <?php include "footer.php"?>
 <?php include "modal.php"?>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
-    <!-- Custom scripts for this page-->
-    <script src="js/sb-admin-datatables.min.js"></script>
-    <script src="js/sb-admin-charts.min.js"></script>
+<?php include "scripts.php" ?>
 
 </body>
 

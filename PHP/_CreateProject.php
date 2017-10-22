@@ -30,24 +30,7 @@
 		{
 			$projecturl = $_POST['ProjectURL'];
 		}
-		//Project Category
-		if($_POST['ddlProjectCategoryTypes'] == 0)
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$projectcategorytypeid = $_POST['ddlProjectCategoryTypes'];
-		}
-		//ProjectLeadID
-		if($_POST['ddlProjectLeadAccountID'] == "")
-		{
-			$returnValue = false;
-		}
-		else
-		{
-			$leadaccountid = $_POST['ddlProjectLeadAccountID'];
-		}
+
 		//desc
 		if($_POST['txtDescription'] == "")
 		{
@@ -57,18 +40,43 @@
 		{
 			$description = $_POST['txtDescription'];
 		}
+        $projectcategorytypeid = $_POST['ddlProjectCategoryTypes'];
+        $leadaccountid = $_POST['ddlProjectLeadAccountID'];
 		if($returnValue)
 		{
-			$project = new Projects();
-			$project->setProjectId(0);	//new acct
-			$project->setProjectName($projectname);
-			$project->setProjectDescription($description);
-			$project->setImgURL($imageURL);
-			$project->setProjectURL($projecturl);
-			$project->setProjectLeadAccountID($leadaccountid);
-			$project->setProjectCategoryID($projectcategorytypeid);
-			$project->save();
-			header("location:../index.php?msg=sucess");
+		    if(isset($_POST["editprojectid"]))
+            {
+                if(is_numeric($_POST["editprojectid"]))
+                {
+                    $pid = $_POST["editprojectid"];
+                }
+                $project = new Projects();
+                $project->setProjectId($pid);	//new acct
+                $project->setProjectName($projectname);
+                $project->setProjectDescription($description);
+                $project->setImgURL($imageURL);
+                $project->setProjectURL($projecturl);
+                $project->setProjectLeadAccountID($leadaccountid);
+                $project->setProjectCategoryID($projectcategorytypeid);
+                $project->save();
+                header("location:../ViewProject.php?projectid=$pid");
+            }
+            else
+            {
+                $project = new Projects();
+                $project->setProjectId(0);	//new acct
+                $project->setProjectName($projectname);
+                $project->setProjectDescription($description);
+                $project->setImgURL($imageURL);
+                $project->setProjectURL($projecturl);
+                $project->setProjectLeadAccountID($leadaccountid);
+                $project->setProjectCategoryID($projectcategorytypeid);
+                $pid = $project->save();
+                header("location:../ViewProject.php?projectid=$pid");
+            }
+
+            header("location:../ViewProject.php?projectid=$pid");
+
 		}
 		else
 		{
