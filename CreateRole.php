@@ -8,7 +8,9 @@ if($_SESSION["LoggedIn"] == "")
 include "DAL/roles.php";
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    //existing accounts
+    if(isset($_GET['msg']))
+        $alertmsg = $_GET['msg'];
+    //existing roles being edited
     if(isset($_GET['cmd']) && isset($_GET['roleid']))
     {
         if($_GET['cmd'] == "edit" && is_numeric($_GET['roleid']))
@@ -51,12 +53,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         <div class="row">
 
             <div class="col-lg-8">
-                <?php if(isset($validationMsg)) { ?>
-                    <div class="alert alert-danger alert-dismissible fade show mx-auto mt-5" role="alert">
+                <?php if(isset($alertmsg)) { ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4> <?php  echo $validationMsg; ?> </h4>
+                        <h4> <?php  echo $alertmsg; ?> </h4>
                     </div>
                 <?php } ?>
                 <div class="card">
@@ -78,14 +80,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                     </div>
                     <div class="card-body">
 
-                        <form id="formCreateRole" method="post" action="PHP/_CreateRole.php" onsubmit="ValidateForm()">
+                        <form id="formCreateRole" method="post" action="PHP/_CreateRole.php" onsubmit="return doValidation()">
                             <div class="form-group">
                                 <label for="dataRoleName">Role name</label>
                                 <input id="inputRoleName" class="form-control" name="dataRoleName" type="text" aria-describedby="nameHelp" placeholder="Enter role name" value="<?php if(isset($editrolename)) echo $editrolename ?>">
                             </div>
                             <div class="form-group">
                                 <label for="txtDescription">Description</label>
-                                <textarea name="txtDescription" class="form-control" rows="5"><?php if(isset($editdescription)) echo $editdescription ?></textarea>
+                                <textarea id="inputDescription" name="txtDescription" class="form-control" rows="5"><?php if(isset($editdescription)) echo $editdescription ?></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-sm-2"></div>
@@ -126,10 +128,43 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
+</div>
     <?php include "footer.php"?>
     <?php include "modal.php"?>
     <?php include "scripts.php" ?>
-</div>
+
+<script>
+    function doValidation() {
+        var isValid = true;
+        var projectName = $("#inputRoleName").val();
+        var description = $("#inputDescription").val();
+
+        if(projectName.length > 0)
+        {
+            $("#inputRoleName").addClass("is-valid");
+            $("#inputRoleName").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputRoleName").addClass("is-invalid");
+            $("#inputRoleName").removeClass("is-valid");
+            isValid = false;
+        }
+        if(description.length > 0)
+        {
+            $("#inputDescription").addClass("is-valid");
+            $("#inputDescription").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputDescription").addClass("is-invalid");
+            $("#inputDescription").removeClass("is-valid");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
 </body>
 
 </html>

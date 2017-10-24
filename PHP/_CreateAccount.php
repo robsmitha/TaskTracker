@@ -51,15 +51,6 @@
 				$confirmPassword = $_POST['exampleConfirmPassword'];
 			}
 		}
-		//img url
-        if($_POST['dataImageURL'] == "")
-        {
-            $returnValue = false;
-        }
-        else
-        {
-            $imgurl = $_POST['dataImageURL'];
-        }
         //location
         if($_POST['dataLocation'] == "")
         {
@@ -81,7 +72,7 @@
         }
         //bio is optional
         $bio = $_POST['dataBio'];
-
+        $imgurl = $_POST['dataImageURL'];
 		if($returnValue)
 		{
 		    session_start();
@@ -117,8 +108,10 @@
                 $account->setImgURL($imgurl);
                 $account->setDateOfBirth($dateofbirth);
                 $account->setLocation($location);
+
                 date_default_timezone_set('America/New_York');
-                $createdate = date('Y-m-d');
+                $createdate = date('m/d/Y h:i:s a', time());
+
                 $account->setCreateDate($createdate);
                 $account->save();
                 header("location:../login.php");

@@ -91,39 +91,49 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 							<h3><?php echo $task->getTaskName(); ?></h3>
 						</div>
 						<div class="col-sm-2">
+
 						<div class="btn-group pull-right">
                             <a class="btn btn-secondary" href="CreateTask.php?cmd=edit&taskid=<?php echo $taskid ?>">Edit</a>
 							<?php
-							$statustypeid = $task->getStatusTypeID();
-								switch($statustypeid)
-								{
-									case 1:	//open
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=2' class='btn btn-secondary'>Start Progress</a>";
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
-									break;
-									case 2:	//in progress
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=1' class='btn btn-secondary'>Stop Progress</a>";
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
-									break;
-									case 3:	//resolved
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
-									break;
-									case 4:	//ready for testing
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=6' class='btn btn-secondary'>Close</a>";
-									break;
-									case 5:	//reopened
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
-									break;
-									case 6:	//closed
-										echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
-									break;
-									default:
-										//do nothing
-									break;
-								}
+                            if(true)    //$task->getAssigneeAccountID() == $_SESSION["AccountID"]
+                            {
+                                $statustypeid = $task->getStatusTypeID();
+                                switch($statustypeid)
+                                {
+                                    case 1:	//open
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=2' class='btn btn-secondary'>Start Progress</a>";
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        $badgecssclass = "primary";
+                                        break;
+                                    case 2:	//in progress
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=1' class='btn btn-secondary'>Stop Progress</a>";
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        $badgecssclass = "light";
+                                        break;
+                                    case 3:	//resolved
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
+                                        $badgecssclass = "success";
+                                        break;
+                                    case 4:	//ready for testing
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=6' class='btn btn-secondary'>Close</a>";
+                                        $badgecssclass = "warning";
+                                        break;
+                                    case 5:	//reopened
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        $badgecssclass = "danger";
+                                        break;
+                                    case 6:	//closed
+                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
+                                        $badgecssclass = "dark";
+                                        break;
+                                    default:
+                                        //do nothing
+                                        break;
+                                }
+                            }
 							?>
 						</div>
 						</div>
@@ -134,7 +144,7 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 					<h4>Details</h4>
 					<div class="row">
 						<div class="col-sm-6">
-							<b>Status: </b><?php echo $statustype->getStatus(); ?>
+                            <b>Status: </b><a href="#" class="badge badge-<?php echo isset($badgecssclass) ? $badgecssclass : "light" ?>"><?php echo $statustype->getStatus(); ?></a>
 						</div>
 						<div class="col-sm-6">
 							<b>Priority: </b><?php echo $prioritytype->getPriorityType(); ?>

@@ -12,6 +12,8 @@ include "DAL/projectcategorytypes.php";
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
+    if(isset($_GET['msg']))
+        $alertmsg = $_GET['msg'];
     //existing accounts
     if(isset($_GET['cmd']) && isset($_GET['projectid']))
     {
@@ -55,12 +57,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
       <div class="row">
 	  
         <div class="col-lg-8">
-            <?php if(isset($validationMsg)) { ?>
-                <div class="alert alert-danger alert-dismissible fade show mx-auto mt-5" role="alert">
+            <?php if(isset($alertmsg)) { ?>
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4> <?php  echo $validationMsg; ?> </h4>
+                    <h4> <?php  echo $alertmsg; ?> </h4>
                 </div>
             <?php } ?>
                 <div class="card">
@@ -73,24 +75,24 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                   </div>
                   <div class="card-body">
 
-                    <form id="formRegister" method="post" action="PHP/_CreateProject.php">
+                    <form id="formRegister" method="post" action="PHP/_CreateProject.php" onsubmit="return doValidation()">
                         <input type="hidden" name="editprojectid" value="<?php echo $editprojectid ?>">
                         <div class="form-group">
                             <label for="ProjectName">Project name</label>
-                            <input class="form-control" name="ProjectName" type="text" aria-describedby="nameHelp" placeholder="Enter project name" value="<?php if(isset($editprojectname)) echo $editprojectname ?>">
+                            <input id="inputProjectName" class="form-control" name="ProjectName" type="text" aria-describedby="nameHelp" placeholder="Enter project name" value="<?php if(isset($editprojectname)) echo $editprojectname ?>">
                         </div>
                         <div class="form-group">
                             <label for="ProjectImgURL">Image URL</label>
-                            <input class="form-control" name="ProjectImgURL" type="text" aria-describedby="nameHelp" placeholder="Enter project image URL" value="<?php if(isset($editprojectimgurl)) echo $editprojectimgurl ?>">
+                            <input id="inputImgURL" class="form-control" name="ProjectImgURL" type="text" aria-describedby="nameHelp" placeholder="Enter project image URL" value="<?php if(isset($editprojectimgurl)) echo $editprojectimgurl ?>">
                         </div>
                         <div class="form-group">
                             <label for="ProjectURL">Project URL</label>
-                            <input class="form-control" name="ProjectURL" type="text" aria-describedby="nameHelp" placeholder="Enter project image URL"  value="<?php if(isset($editprojecturl)) echo $editprojecturl ?>">
+                            <input id="inputProjectURL" class="form-control" name="ProjectURL" type="text" aria-describedby="nameHelp" placeholder="Enter project image URL"  value="<?php if(isset($editprojecturl)) echo $editprojecturl ?>">
                         </div>
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <label for="ddlProjectCategoryTypes">Project Category</label>
-                                <select name="ddlProjectCategoryTypes" class="form-control">
+                                <select id="inputProjectCategoryType" name="ddlProjectCategoryTypes" class="form-control">
                                 <?php
 
                                 if(isset($editprojectcategoryid))
@@ -127,7 +129,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                             </div>
                             <div class="col-md-6">
                                 <label for="ddlProjectLeadAccountID">Project Lead</label>
-                                <select name="ddlProjectLeadAccountID" class="form-control">
+                                <select id="inputProjectLeadAccountID" name="ddlProjectLeadAccountID" class="form-control">
                                 <?php
                                 if(isset($editprojectleadaccountid))
                                 {
@@ -164,7 +166,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                         </div>
                         <div class="form-group">
                             <label for="txtDescription">Description</label>
-                            <textarea name="txtDescription" class="form-control" rows="5"><?php if(isset($editprojectdescription)) echo $editprojectdescription ?></textarea>
+                            <textarea id="inputDescription" name="txtDescription" class="form-control" rows="5"><?php if(isset($editprojectdescription)) echo $editprojectdescription ?></textarea>
                         </div>
                         <div class="row">
                             <div class="col-sm-2"></div>
@@ -205,10 +207,91 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
+  </div>
 <?php include "footer.php"?>
 <?php include "modal.php"?>
 <?php include "scripts.php" ?>
-  </div>
+<script>
+    function doValidation() {
+        var isValid = true;
+        var projectName = $("#inputProjectName").val();
+        var imgURL = $("#inputImgURL").val();
+        var projectLink = $("#inputProjectURL").val();
+        var projectCategoryType = $("#inputProjectCategoryType").val();
+        var LeadAccountID = $("#inputProjectLeadAccountID").val();
+        var description = $("#inputDescription").val();
+        if(projectName.length > 0)
+        {
+            $("#inputProjectName").addClass("is-valid");
+            $("#inputProjectName").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputProjectName").addClass("is-invalid");
+            $("#inputProjectName").removeClass("is-valid");
+            isValid = false;
+        }
+        if(imgURL.length > 0)
+        {
+            $("#inputImgURL").addClass("is-valid");
+            $("#inputImgURL").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputImgURL").addClass("is-invalid");
+            $("#inputImgURL").removeClass("is-valid");
+            isValid = false;
+        }
+        if(projectLink.length > 0)
+        {
+            $("#inputProjectURL").addClass("is-valid");
+            $("#inputProjectURL").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputProjectURL").addClass("is-invalid");
+            $("#inputProjectURL").removeClass("is-valid");
+            isValid = false;
+        }
+        if(description.length > 0)
+        {
+            $("#inputDescription").addClass("is-valid");
+            $("#inputDescription").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputDescription").addClass("is-invalid");
+            $("#inputDescription").removeClass("is-valid");
+            isValid = false;
+        }
+
+        if(projectCategoryType != 0)
+        {
+            $("#inputProjectCategoryType").addClass("is-valid");
+            $("#inputProjectCategoryType").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputProjectCategoryType").addClass("is-invalid");
+            $("#inputProjectCategoryType").removeClass("is-valid");
+            isValid = false;
+        }
+
+        if(LeadAccountID != 0)
+        {
+            $("#inputProjectLeadAccountID").addClass("is-valid");
+            $("#inputProjectLeadAccountID").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputProjectLeadAccountID").addClass("is-invalid");
+            $("#inputProjectLeadAccountID").removeClass("is-valid");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
 </body>
 
 </html>

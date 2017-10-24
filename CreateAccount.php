@@ -55,48 +55,48 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
       </div>
       <div class="card-body">
 	  
-        <form id="needs-validation" method="post" action="PHP/_CreateAccount.php">
+        <form method="post" action="PHP/_CreateAccount.php" onsubmit="return doValidation()">
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
                 <label for="exampleInputName">First name</label>
-                <input class="form-control" name="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name" value="<?php if(isset($editfirstname)) echo $editfirstname; ?>" required>
+                <input id="inputFirstName" class="form-control" name="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name" value="<?php if(isset($editfirstname)) echo $editfirstname; ?>">
               </div>
               <div class="col-md-6">
                 <label for="exampleInputLastName">Last name</label>
-                <input class="form-control" name="exampleInputLastName" type="text" aria-describedby="nameHelp" placeholder="Enter last name" value="<?php if(isset($editlastname)) echo $editlastname; ?>" required>
+                <input id="inputLastName" class="form-control" name="exampleInputLastName" type="text" aria-describedby="nameHelp" placeholder="Enter last name" value="<?php if(isset($editlastname)) echo $editlastname; ?>">
               </div>
             </div>
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" name="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?php if(isset($editemail)) echo $editemail; ?>" required>
+            <input id="inputEmail" class="form-control" name="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?php if(isset($editemail)) echo $editemail; ?>">
           </div>
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
                 <label for="exampleInputPassword1">Password</label>
-                <input class="form-control" name="exampleInputPassword1" type="password" placeholder="Password" value="<?php if(isset($editpassword)) echo $editpassword; ?>" required>
+                <input id="inputPassword" class="form-control" name="exampleInputPassword1" type="password" placeholder="Password" value="<?php if(isset($editpassword)) echo $editpassword; ?>">
               </div>
               <div class="col-md-6">
                 <label for="exampleConfirmPassword">Confirm password</label>
-                <input class="form-control" name="exampleConfirmPassword" type="password" placeholder="Confirm password" value="<?php if(isset($editpassword)) echo $editpassword; ?>" required>
+                <input id="inputConfirmPassword" class="form-control" name="exampleConfirmPassword" type="password" placeholder="Confirm password" value="<?php if(isset($editpassword)) echo $editpassword; ?>">
               </div>
             </div>
           </div>
             <div class="form-group">
                 <label for="dataImageURL">Image URL</label>
-                <input class="form-control" name="dataImageURL" aria-describedby="emailHelp" placeholder="Enter Image URL" value="<?php if(isset($editimgurl)) echo $editimgurl; ?>">
+                <input id="inputImgURL" class="form-control" name="dataImageURL" aria-describedby="emailHelp" placeholder="Enter Image URL" value="<?php if(isset($editimgurl)) echo $editimgurl; ?>">
             </div>
             <div class="form-group">
                 <div class="form-row">
                     <div class="col-md-6">
                         <label for="dataLocation">Location</label>
-                        <input class="form-control" name="dataLocation" placeholder="Location" value="<?php if(isset($editlocation)) echo $editlocation; ?>"required>
+                        <input id="inputLocation" class="form-control" name="dataLocation" placeholder="Location" value="<?php if(isset($editlocation)) echo $editlocation; ?>">
                     </div>
                     <div class="col-md-6" id="divDOB">
                         <label for="dataDOB">Date of Birth</label>
-                        <input id="inputDOB" class="form-control" name="dataDOB" placeholder="09/19/1994" value="<?php if(isset($editdateofbirth)) echo $editdateofbirth; ?>" onkeyup="keyUP(event.keyCode)" onkeydown="return isNumeric(event.keyCode);" onpaste="return false;" required>
+                        <input id="inputDOB" type="date" class="form-control" name="dataDOB" placeholder="09/19/1994" value="<?php if(isset($editdateofbirth)) echo $editdateofbirth; ?>" onkeyup="keyUP(event.keyCode)" onkeydown="return isNumeric(event.keyCode);" onpaste="return false;">
                         <div id="divValidateDate">
 
                         </div>
@@ -105,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
             </div>
             <div class="form-group">
                 <label for="dataBio">Bio Description <small class="text-muted">(optional)</small></label>
-                <textarea name="dataBio" class="form-control" rows="5"><?php if(isset($editbio)) echo $editbio; ?></textarea>
+                <textarea id="inputBio" name="dataBio" class="form-control" rows="5"><?php if(isset($editbio)) echo $editbio; ?></textarea>
             </div>
             <div class="form-group">
                 <?php if(isset($editaccountid)) { ?>
@@ -159,20 +159,131 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
           }
           return isValidInput;
       }
-      (function() {
-          'use strict';
+        //javascript for form validation
+      function doValidation() {
+          var isValid = true;
+          var firstName = $("#inputFirstName").val();
+          var lastName = $("#inputLastName").val();
+          var email = $("#inputEmail").val();
+          var password = $("#inputPassword").val();
+          var confirmPassword = $("#inputConfirmPassword").val();
+          var imgURL = $("#inputImgURL").val();
+          var location = $("#inputLocation").val();
+          var dob = $("#inputDOB").val();
+          var bio = $("#inputBio").val();
+          if(firstName.length > 0)
+          {
+              $("#inputFirstName").addClass("is-valid");
+              $("#inputFirstName").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputFirstName").addClass("is-invalid");
+              $("#inputFirstName").removeClass("is-valid");
+              isValid = false;
+          }
+          if(lastName.length > 0)
+          {
+              $("#inputLastName").addClass("is-valid");
+              $("#inputLastName").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputLastName").addClass("is-invalid");
+              $("#inputLastName").removeClass("is-valid");
+              isValid = false;
+          }
+          if(email.length > 0)
+          {
+              $("#inputEmail").addClass("is-valid");
+              $("#inputEmail").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputEmail").addClass("is-invalid");
+              $("#inputEmail").removeClass("is-valid");
+              isValid = false;
+          }
+          if(password.length > 0)
+          {
+              $("#inputPassword").addClass("is-valid");
+              $("#inputPassword").removeClass("is-invalid");
+              if(confirmPassword.length > 0)
+              {
+                  $("#inputConfirmPassword").addClass("is-valid");
+                  $("#inputConfirmPassword").removeClass("is-invalid");
+              }
+              else
+              {
+                  $("#inputConfirmPassword").addClass("is-invalid");
+                  $("#inputConfirmPassword").removeClass("is-valid");
+                  isValid = false;
+              }
+          }
+          else
+          {
+              $("#inputPassword").addClass("is-invalid");
+              $("#inputPassword").removeClass("is-valid");
+              isValid = false;
+          }
+          if(confirmPassword.length > 0)
+          {
+              $("#inputConfirmPassword").addClass("is-valid");
+              $("#inputConfirmPassword").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputConfirmPassword").addClass("is-invalid");
+              $("#inputConfirmPassword").removeClass("is-valid");
+              isValid = false;
+          }
+          if(imgURL.length > 0)
+          {
+              $("#inputImgURL").addClass("is-valid");
+              $("#inputImgURL").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputImgURL").addClass("is-invalid");
+              $("#inputImgURL").removeClass("is-valid");
+              isValid = false;
+          }
 
-          window.addEventListener('load', function() {
-              var form = document.getElementById('needs-validation');
-              form.addEventListener('submit', function(event) {
-                  if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                  }
-                  form.classList.add('was-validated');
-              }, false);
-          }, false);
-      })();
+          if(location.length > 0)
+          {
+              $("#inputLocation").addClass("is-valid");
+              $("#inputLocation").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputLocation").addClass("is-invalid");
+              $("#inputLocation").removeClass("is-valid");
+              isValid = false;
+          }
+          if(dob.length > 0)
+          {
+              $("#inputDOB").addClass("is-valid");
+              $("#inputDOB").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputDOB").addClass("is-invalid");
+              $("#inputDOB").removeClass("is-valid");
+              isValid = false;
+          }
+          if(bio.length > 0)
+          {
+              $("#inputBio").addClass("is-valid");
+              $("#inputBio").removeClass("is-invalid");
+          }
+          else
+          {
+              $("#inputBio").addClass("is-invalid");
+              $("#inputBio").removeClass("is-valid");
+              isValid = false;
+          }
+          return isValid;
+      }
   </script>
 </body>
 

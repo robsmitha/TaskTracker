@@ -6,9 +6,9 @@
 	<footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-		<b><?php if(isset($_SESSION["FirstName"])) echo "Welcome, ". ucfirst($_SESSION["FirstName"]);  ?></b>
-		
-          <small>Copyright © TaskTracker 2017</small>
+		<b></b>
+
+          <small><?php if(isset($_SESSION["FirstName"])) echo "Welcome, ". ucfirst($_SESSION["FirstName"]);  ?> &middot; <span class="text-muted">Copyright © TaskTracker <?php echo date("Y"); ?></span></small>
         </div>
       </div>
     </footer>

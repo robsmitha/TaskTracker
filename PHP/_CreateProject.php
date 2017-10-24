@@ -44,12 +44,9 @@
         $leadaccountid = $_POST['ddlProjectLeadAccountID'];
 		if($returnValue)
 		{
-		    if(isset($_POST["editprojectid"]))
+		    if(isset($_POST["editprojectid"]) && is_numeric($_POST["editprojectid"]))
             {
-                if(is_numeric($_POST["editprojectid"]))
-                {
-                    $pid = $_POST["editprojectid"];
-                }
+                $pid = $_POST["editprojectid"];
                 $project = new Projects();
                 $project->setProjectId($pid);	//new acct
                 $project->setProjectName($projectname);
@@ -71,16 +68,13 @@
                 $project->setProjectURL($projecturl);
                 $project->setProjectLeadAccountID($leadaccountid);
                 $project->setProjectCategoryID($projectcategorytypeid);
-                $pid = $project->save();
-                header("location:../ViewProject.php?projectid=$pid");
+                $project->save();
+                header("location:../index.php?msg=Created Project: $projectname!");
             }
-
-            header("location:../ViewProject.php?projectid=$pid");
-
 		}
 		else
 		{
-			header("location:../CreateProject.php?msg=validate");
+			header("location:../CreateProject.php?msg=Please review your entries.");
 		}
 	}
 

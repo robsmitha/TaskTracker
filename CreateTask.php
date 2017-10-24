@@ -1,4 +1,5 @@
 <?php
+#region validate query and include class declarations
 session_start();
 if($_SESSION["LoggedIn"] == "")
 {
@@ -12,7 +13,10 @@ include "DAL/tasktypes.php";
 include "DAL/projects.php";
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    //existing accounts
+    if(isset($_GET['msg']))
+        $alertmsg = $_GET['msg'];
+
+    //existing tasks
     if(isset($_GET['cmd']) && isset($_GET['taskid']))
     {
         if($_GET['cmd'] == "edit" && is_numeric($_GET['taskid']))
@@ -34,6 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         }
     }
 }
+#endregion
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,12 +62,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
       <div class="row">
 	  
         <div class="col-lg-8">
-            <?php if(isset($validationMsg)) { ?>
-                <div class="alert alert-danger alert-dismissible fade show mx-auto mt-5" role="alert">
+            <?php if(isset($alertmsg)) { ?>
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                  <h4> <?php  echo $validationMsg; ?> </h4>
+                  <h4> <?php  echo $alertmsg; ?> </h4>
                 </div>
               <?php } ?>
                 <div class="card">
@@ -74,17 +79,17 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                       <?php } ?>
                      </div>
                   <div class="card-body">
-                    <form id="formTask" method="post" action="PHP/_CreateTask.php">
+                    <form id="formTask" method="post" action="PHP/_CreateTask.php" onsubmit="return doValidation()">
                         <div class="form-group">
                             <label for="TaskName">Task name</label>
-                            <input class="form-control" name="TaskName" type="text" aria-describedby="nameHelp" placeholder="Enter task name" value="<?php if(isset($edittaskname)) echo $edittaskname ?>">
+                            <input id="inputTaskName" class="form-control" name="TaskName" type="text" aria-describedby="nameHelp" placeholder="Enter task name" value="<?php if(isset($edittaskname)) echo $edittaskname ?>">
                         </div>
                         <div class="form-group">
                             <div>
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <label for="ddlTaskType">Task Type</label>
-                                        <select name="ddlTaskType" class="form-control">
+                                        <select id="inputTaskType" name="ddlTaskType" class="form-control">
                                             <?php
                                             if(isset($edittasktypeid))
                                             {
@@ -118,7 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                                     </div>
                                     <div class="col-md-6">
                                         <label for="ddlPriorityType">Priority</label>
-                                        <select name="ddlPriorityType" class="form-control">
+                                        <select id="inputPriorityType" name="ddlPriorityType" class="form-control">
                                             <?php
                                             if(isset($edittaskpriorirtytypeid))
                                             {
@@ -155,7 +160,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <label for="ddlAssignee">Assign To</label>
-                                        <select name="ddlAssignee" class="form-control">
+                                        <select id="inputAssigneeAccountID" name="ddlAssignee" class="form-control">
                                             <?php
                                             if(isset($edittaskassigneeaccountid))
                                             {
@@ -190,7 +195,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                                     </div>
                                     <div class="col-md-6">
                                         <label for="ddlProjects">Project</label>
-                                        <select name="ddlProjects" class="form-control">
+                                        <select id="inputProjectID" name="ddlProjects" class="form-control">
                                             <?php
                                             if(isset($edittaskprojectid))
                                             {
@@ -229,7 +234,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                         </div>
                         <div class="form-group">
                             <label for="txtDescription">Description</label>
-                            <textarea name="txtDescription" class="form-control" rows="5"><?php if(isset($edittaskdescription)) echo $edittaskdescription ?></textarea>
+                            <textarea id="inputDescription" name="txtDescription" class="form-control" rows="5"><?php if(isset($edittaskdescription)) echo $edittaskdescription ?></textarea>
                         </div>
                         <input type="hidden" name="edittaskid" value="<?php echo $edittaskid ?>">
                         <input type="hidden" name="edittaskreporteraccountid" value="<?php echo $edittaskreporteraccountid ?>">
@@ -274,14 +279,99 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
           <?php include "tasks.php"; ?>
         </div>
       </div>
-      
+
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
+  </div>
 <?php include "footer.php"?>
 <?php include "modal.php"?>
 <?php include "scripts.php" ?>
-  </div>
+<script>
+    function doValidation() {
+        var isValid = true;
+        var taskName = $("#inputTaskName").val();
+        var description = $("#inputDescription").val();
+        var taskType = $("#inputTaskType").val();
+        var priorityType = $("#inputPriorityType").val();
+        var assigneeAccountID = $("#inputAssigneeAccountID").val();
+        var projectID = $("#inputProjectID").val();
+        if(taskName.length > 0)
+        {
+            $("#inputTaskName").addClass("is-valid");
+            $("#inputTaskName").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputTaskName").addClass("is-invalid");
+            $("#inputTaskName").removeClass("is-valid");
+            isValid = false;
+        }
+
+
+        if(taskType != 0)
+        {
+            $("#inputTaskType").addClass("is-valid");
+            $("#inputTaskType").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputTaskType").addClass("is-invalid");
+            $("#inputTaskType").removeClass("is-valid");
+            isValid = false;
+        }
+
+        if(priorityType != 0)
+        {
+            $("#inputPriorityType").addClass("is-valid");
+            $("#inputPriorityType").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputPriorityType").addClass("is-invalid");
+            $("#inputPriorityType").removeClass("is-valid");
+            isValid = false;
+        }
+
+        if(assigneeAccountID != 0)
+        {
+            $("#inputAssigneeAccountID").addClass("is-valid");
+            $("#inputAssigneeAccountID").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputAssigneeAccountID").addClass("is-invalid");
+            $("#inputAssigneeAccountID").removeClass("is-valid");
+            isValid = false;
+        }
+
+        if(projectID != 0)
+        {
+            $("#inputProjectID").addClass("is-valid");
+            $("#inputProjectID").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputProjectID").addClass("is-invalid");
+            $("#inputProjectID").removeClass("is-valid");
+            isValid = false;
+        }
+
+
+        if(description.length > 0)
+        {
+            $("#inputDescription").addClass("is-valid");
+            $("#inputDescription").removeClass("is-invalid");
+        }
+        else
+        {
+            $("#inputDescription").addClass("is-invalid");
+            $("#inputDescription").removeClass("is-valid");
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
 </body>
 
 </html>

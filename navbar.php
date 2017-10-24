@@ -24,6 +24,12 @@ $accountid = $_SESSION["AccountID"];
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+              <a class="nav-link" href="SearchTasks.php">
+                  <i class="fa fa-fw fa-search"></i>
+                  <span class="nav-link-text">Search Tasks</span>
+              </a>
+          </li>
 		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
 		  <a class="nav-link" href="CreateTask.php">
 			<i class="fa fa-fw fa-plus-square-o"></i>
@@ -129,11 +135,20 @@ $accountid = $_SESSION["AccountID"];
           </div>
         </li>
         <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2">
+          <form class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="SearchTasks.php">
             <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search for...">
+                <!--<div class="input-group-btn">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tasks
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="aTasks">Tasks</a>
+                        <a class="dropdown-item" id="aAccounts"">Accounts</a>
+                    </div>
+                </div>-->
+              <input class="form-control" name="searchBox" type="text" placeholder="Search for...">
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" type="submit">
                   <i class="fa fa-search"></i>
                 </button>
               </span>

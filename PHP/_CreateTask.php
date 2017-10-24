@@ -1,6 +1,6 @@
 <?php
 session_start();
-$ReporterAccountID = $_SESSION["AccountID"];
+$reporteracoountid = $_SESSION["AccountID"];
 	include "../DAL/tasks.php";
 
 	if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -23,30 +23,65 @@ $ReporterAccountID = $_SESSION["AccountID"];
 		{
 			$description = $_POST['txtDescription'];
 		}
-        $tasktype = $_POST['ddlTaskType'];
-		$PriorityTypeID = $_POST['ddlPriorityType'];
-        $AssigneeAccountID = $_POST['ddlAssignee'];
-        $ProjectID = $_POST['ddlProjects'];
+        if($_POST['ddlTaskType'] == 0)
+        {
+            $returnValue = false;
+        }
+        else{
+            $tasktype =  $_POST['ddlTaskType'];
+        }
+
+        if($_POST['ddlPriorityType'] == 0)
+        {
+            $returnValue = false;
+        }
+        else{
+            $taskprioritytypeid = $_POST['ddlPriorityType'];
+        }
+
+        if($_POST['ddlAssignee'] == 0)
+        {
+            $returnValue = false;
+        }
+        else{
+            $taskassigneeaccountid = $_POST['ddlAssignee'];
+        }
+
+        if($_POST['ddlProjects'] == 0)
+        {
+            $returnValue = false;
+        }
+        else{
+            $taskprojectid = $_POST['ddlProjects'];
+        }
+
+
 		if($returnValue)
 		{
             if(isset($_POST["edittaskid"]) && $_POST["edittaskid"] > 0) {
                 if (is_numeric($_POST["edittaskid"])) {
                     $tid = $_POST["edittaskid"];
+                    $edittaskreporteraccountid = $_POST["edittaskreporteraccountid"] == 0 ? "" : $_POST["edittaskreporteraccountid"];
+                    $edittaskstatustypeid = $_POST["edittaskstatustypeid"] == 0 ? "" : $_POST["edittaskstatustypeid"];
+                    $edittaskcreatedate = isset($_POST["edittaskcreatedate"]) ? $_POST["edittaskcreatedate"] : "";
+                    $edittaskclosedate = isset($_POST["edittaskclosedate"]) ? $_POST["edittaskclosedate"] : "";
+                    $edittaskreopendate = isset($_POST["edittaskreopendate"]) ? $_POST["edittaskreopendate"] : "";
+
                     $task = new Tasks();
                     $task->setTaskID($tid);	//new task
                     $task->setTaskName($taskname);
                     $task->setDescription($description);
-                    $task->setAssigneeAccountID($AssigneeAccountID);
-                    $task->setReporterAccountID($_POST["edittaskreporteraccountid"]);
-                    $task->setStatusTypeID($_POST["edittaskstatustypeid"]);		//set to open as default
+                    $task->setAssigneeAccountID($taskassigneeaccountid);
+                    $task->setReporterAccountID($edittaskreporteraccountid);
+                    $task->setStatusTypeID($edittaskstatustypeid);		//set to open as default
                     $task->setTaskTypeID($tasktype);
-                    $task->setPriorityTypeID($PriorityTypeID);
-                    $task->setProjectID($ProjectID);
-                    $task->setCreateDate($_POST["edittaskcreatedate"]);
-                    $task->setCloseDate($_POST["edittaskclosedate"]);
-                    $task->setReopenDate($_POST["edittaskreopendate"]);
+                    $task->setPriorityTypeID($taskprioritytypeid);
+                    $task->setProjectID($taskprojectid);
+                    $task->setCreateDate($edittaskcreatedate);
+                    $task->setCloseDate($edittaskclosedate);
+                    $task->setReopenDate($edittaskreopendate);
                     $task->save();
-                    header("location:../index.php?msg=success");
+                    header("location:../ViewTask.php?taskid=$tid");
                 }
             }
             else{
@@ -54,12 +89,12 @@ $ReporterAccountID = $_SESSION["AccountID"];
                 $task->setTaskID(0);	//new task
                 $task->setTaskName($taskname);
                 $task->setDescription($description);
-                $task->setAssigneeAccountID($AssigneeAccountID);
-                $task->setReporterAccountID($ReporterAccountID);
+                $task->setAssigneeAccountID($taskassigneeaccountid);
+                $task->setReporterAccountID($reporteracoountid);
                 $task->setStatusTypeID(1);		//set to open as default
                 $task->setTaskTypeID($tasktype);
-                $task->setPriorityTypeID($PriorityTypeID);
-                $task->setProjectID($ProjectID);
+                $task->setPriorityTypeID($taskprioritytypeid);
+                $task->setProjectID($taskprojectid);
                 //record dates
                 date_default_timezone_set('America/New_York');
 
@@ -69,7 +104,7 @@ $ReporterAccountID = $_SESSION["AccountID"];
                 //$task->setCloseDate(0);
                 //$task->setReopenDate(0);
                 $task->save();
-                header("location:../index.php?msg=success");
+                header("location:../index.php?msg=Created Task: $taskname!");
             }
 
 		}

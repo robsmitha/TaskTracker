@@ -42,7 +42,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $role->setRole($rolename);
             $role->setDescription($description);
             $role->save();
-            header("location:../index.php");
+            header("location:../index.php?msg=Created Role: $rolename!");
         }
     }
     else
