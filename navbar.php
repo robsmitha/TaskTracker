@@ -1,5 +1,9 @@
 <?php
 $accountid = $_SESSION["AccountID"];
+$roleid = $_SESSION["RoleID"];
+include "DAL/rolestopermissions.php";
+
+
 ?>
 <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -24,30 +28,52 @@ $accountid = $_SESSION["AccountID"];
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-              <a class="nav-link" href="SearchTasks.php">
-                  <i class="fa fa-fw fa-search"></i>
-                  <span class="nav-link-text">Search Tasks</span>
-              </a>
-          </li>
-		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
-		  <a class="nav-link" href="CreateTask.php">
-			<i class="fa fa-fw fa-plus-square-o"></i>
-			<span class="nav-link-text">Create Task</span>
-		  </a>
-		</li>
-		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-		  <a class="nav-link" href="CreateProject.php">
-			<i class="fa fa-fw fa-pencil-square-o"></i>
-			<span class="nav-link-text">Create Project</span>
-		  </a>
-		</li>
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-              <a class="nav-link" href="CreateRole.php">
-                  <i class="fa fa-fw fa-user-plus"></i>
-                  <span class="nav-link-text">Create Role</span>
-              </a>
-          </li>
+          <?php
+          $PermissionsList = Rolestopermissions::loadbyroleid($roleid);
+          foreach($PermissionsList as $permission)
+          {
+              if($permission->getPermissionID() == 5){  //Can Search tasks
+            ?>
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+                      <a class="nav-link" href="SearchTasks.php">
+                          <i class="fa fa-fw fa-search"></i>
+                          <span class="nav-link-text">Search Tasks</span>
+                      </a>
+                  </li>
+          <?php
+              }
+              if($permission->getPermissionID() == 1){
+            ?>
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
+                      <a class="nav-link" href="CreateTask.php">
+                          <i class="fa fa-fw fa-plus-square-o"></i>
+                          <span class="nav-link-text">Create Task</span>
+                      </a>
+                  </li>
+          <?php
+              }
+              if($permission->getPermissionID() == 3){
+                  ?>
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+                      <a class="nav-link" href="CreateProject.php">
+                          <i class="fa fa-fw fa-pencil-square-o"></i>
+                          <span class="nav-link-text">Create Project</span>
+                      </a>
+                  </li>
+          <?php
+              }
+              if($permission->getPermissionID() == 3){
+                  ?>
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+                      <a class="nav-link" href="CreateRole.php">
+                          <i class="fa fa-fw fa-user-plus"></i>
+                          <span class="nav-link-text">Create Role</span>
+                      </a>
+                  </li>
+          <?php
+              }
+          }
+          ?>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

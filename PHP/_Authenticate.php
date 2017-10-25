@@ -38,7 +38,8 @@
 				session_start();
 				$_SESSION["LoggedIn"] = true;
 				$_SESSION["FirstName"] = $firstname;
-				$_SESSION["AccountID"] = $accountid;
+                $_SESSION["AccountID"] = $accountid;
+                $_SESSION["RoleID"] = $roleid;
 				header("location:../index.php");
 			}
 			else
