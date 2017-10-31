@@ -7,7 +7,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     {
         if($_GET['cmd'] == "edit" && is_numeric($_GET['accountid']))
         {
-            if($_GET['accountid'] == $_SESSION["AccountID"])
+            if(true)
             {
                 //load this account
                 $editaccountid = $_GET['accountid'];
@@ -23,6 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                 $editlocation = $editaccount->getLocation();
                 $editdateofbirth = $editaccount->getDateOfBirth();
                 $editbio = $editaccount->getBio();
+                $editcreatedate = $editaccount->getCreateDate();
             }
             else
             {
@@ -107,6 +108,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                 <label for="dataBio">Bio Description <small class="text-muted">(optional)</small></label>
                 <textarea id="inputBio" name="dataBio" class="form-control" rows="5"><?php if(isset($editbio)) echo $editbio; ?></textarea>
             </div>
+            <input type="hidden" name="editaccountid" value="<?php if(isset($editaccountid)) echo $editaccountid; ?>">
+            <input type="hidden" name="editcreatedate" value="<?php if(isset($editcreatedate)) echo $editcreatedate; ?>">
             <div class="form-group">
                 <?php if(isset($editaccountid)) { ?>
                     <div class="row">

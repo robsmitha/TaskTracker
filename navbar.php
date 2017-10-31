@@ -1,6 +1,6 @@
 <?php
-$accountid = $_SESSION["AccountID"];
-$roleid = $_SESSION["RoleID"];
+$session_accountid = $_SESSION["AccountID"];
+$session_roleid = $_SESSION["RoleID"];
 include "DAL/rolestopermissions.php";
 
 
@@ -23,56 +23,97 @@ include "DAL/rolestopermissions.php";
           </a>
         </li>
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Update Account Information">
-              <a class="nav-link" href="ViewAccount.php?accountid=<?php echo $accountid ?>">
+              <a class="nav-link" href="ViewAccount.php?accountid=<?php echo $session_accountid ?>">
                   <i class="fa fa-fw fa-user"></i>
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
           <?php
-          $PermissionsList = Rolestopermissions::loadbyroleid($roleid);
-          foreach($PermissionsList as $permission)
-          {
-              if($permission->getPermissionID() == 5){  //Can Search tasks
-            ?>
-                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-                      <a class="nav-link" href="SearchTasks.php">
-                          <i class="fa fa-fw fa-search"></i>
-                          <span class="nav-link-text">Search Tasks</span>
-                      </a>
-                  </li>
+          if($session_roleid != 0) {
+
+              ?>
+
+<!--              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create">
+                  <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+                      <i class="fa fa-fw fa-file"></i>
+                      <span class="nav-link-text">Create</span>
+                  </a>
+                  <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+-->
+              <?php
+
+              $PermissionsList = Rolestopermissions::loadbyroleid($session_roleid);
+              foreach($PermissionsList as $permission)
+              {
+                  if($permission->getPermissionID() == 17){  //Can Search tasks
+                ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Tasks">
+                          <a class="nav-link" href="SearchTasks.php">
+                              <i class="fa fa-fw fa-search"></i>
+                              <span class="nav-link-text">Search Tasks</span>
+                          </a>
+                      </li>
+              <?php
+                  }
+                  if($permission->getPermissionID() == 12){     //Can Create/Edit Tasks
+                ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
+                          <a class="nav-link" href="CreateTask.php">
+                              <i class="fa fa-fw fa-plus-square-o"></i>
+                              <span class="nav-link-text">Create Task</span>
+                          </a>
+                      </li>
+              <?php
+                  }
+                  if($permission->getPermissionID() == 8){      //Can Create/Edit Projects
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+                          <a class="nav-link" href="CreateProject.php">
+                              <i class="fa fa-fw fa-pencil-square-o"></i>
+                              <span class="nav-link-text">Create Project</span>
+                          </a>
+                      </li>
+              <?php
+                  }
+                  if($permission->getPermissionID() == 9){      //Can Create/Edit Roles
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Role">
+                          <a class="nav-link" href="CreateRole.php">
+                              <i class="fa fa-fw fa-user-plus"></i>
+                              <span class="nav-link-text">Create Role</span>
+                          </a>
+                      </li>
+              <?php
+                  }
+                  if($permission->getPermissionID() == 16){  //Can Search Accounts
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Accounts">
+                          <a class="nav-link" href="SearchAccounts.php">
+                              <i class="fa fa-fw fa-search"></i>
+                              <span class="nav-link-text">Search Accounts</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
+                  if($permission->getPermissionID() == 14){  //Can Create/Edit Teams
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Team">
+                          <a class="nav-link" href="CreateTeam.php">
+                              <i class="fa fa-fw fa-users"></i>
+                              <span class="nav-link-text">Create Team</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
+              }//end foreach
+
+
+              ?>
+<!--            </ul>
+              </li>
+-->
           <?php
-              }
-              if($permission->getPermissionID() == 1){
-            ?>
-                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
-                      <a class="nav-link" href="CreateTask.php">
-                          <i class="fa fa-fw fa-plus-square-o"></i>
-                          <span class="nav-link-text">Create Task</span>
-                      </a>
-                  </li>
-          <?php
-              }
-              if($permission->getPermissionID() == 3){
-                  ?>
-                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-                      <a class="nav-link" href="CreateProject.php">
-                          <i class="fa fa-fw fa-pencil-square-o"></i>
-                          <span class="nav-link-text">Create Project</span>
-                      </a>
-                  </li>
-          <?php
-              }
-              if($permission->getPermissionID() == 3){
-                  ?>
-                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
-                      <a class="nav-link" href="CreateRole.php">
-                          <i class="fa fa-fw fa-user-plus"></i>
-                          <span class="nav-link-text">Create Role</span>
-                      </a>
-                  </li>
-          <?php
-              }
-          }
+          }//end if
           ?>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
@@ -161,20 +202,20 @@ include "DAL/rolestopermissions.php";
           </div>
         </li>
         <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="SearchTasks.php">
+          <form id="NavSearchBar" class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="SearchTasks.php">
             <div class="input-group">
-                <!--<div class="input-group-btn">
+                <div class="input-group-btn">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tasks
+                       <span id="lblSearchTable">Tasks</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" id="aTasks">Tasks</a>
-                        <a class="dropdown-item" id="aAccounts"">Accounts</a>
+                        <a href="#" class="dropdown-item" id="aTasks" onclick='setFormAction(this);'>Tasks</a>
+                        <a href="#" class="dropdown-item" id="aAccounts" onclick='setFormAction(this);'>Accounts</a>
                     </div>
-                </div>-->
+                </div>
               <input class="form-control" name="searchBox" type="text" placeholder="Search for...">
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" type="submit">
+                <button class="btn btn-primary" type="submit">
                   <i class="fa fa-search"></i>
                 </button>
               </span>
@@ -188,3 +229,31 @@ include "DAL/rolestopermissions.php";
       </ul>
     </div>
   </nav>
+<script>
+
+    function setFormAction(el){
+        switch($(el).attr("id"))
+        {
+            case "aTasks":
+                clearAll();
+                $("#NavSearchBar").attr("action", "SearchTasks.php");
+                $("#lblSearchTable").text("Tasks");
+                $("#aTasks").addClass('active');
+
+                break;
+            case "aAccounts":
+                clearAll();
+                $("#NavSearchBar").attr("action", "SearchAccounts.php");
+                $("#lblSearchTable").text("Accounts");
+                $("#aAccounts").addClass('active');
+                break;
+        }
+    }
+    function clearAll()
+    {
+        $("#NavSearchBar").attr("action", "");
+        $("#lblSearchTable").text("");
+        $("#aTasks").removeClass('active');
+        $("#aAccounts").removeClass('active');
+    }
+</script>

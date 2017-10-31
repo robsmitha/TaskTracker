@@ -75,23 +75,22 @@
         $imgurl = $_POST['dataImageURL'];
 		if($returnValue)
 		{
-		    session_start();
-            if(isset($_SESSION["AccountID"]))
+            if(isset($_POST["editaccountid"]))
             {
                 $account = new Accounts();
-                $account->setAccountID($_SESSION["AccountID"]);
+                $account->setAccountID($_POST["editaccountid"]);
                 $account->setFirstName($name);
                 $account->setLastName($lastname);
                 $account->setEmail($email);
                 $account->setPassword($password);
                 $account->setBio($bio);
                 $account->setRoleID(0);
-                $account->setTeamID(0);
                 $account->setImgURL($imgurl);
                 $account->setDateOfBirth($dateofbirth);
                 $account->setLocation($location);
+                $account->setCreateDate($_POST["editcreatedate"]);
                 $account->save();
-                $transferid = $_SESSION["AccountID"];
+                $transferid = $_POST["editaccountid"];
                 header("location:../ViewAccount.php?accountid=$transferid");
             }
             else
@@ -104,14 +103,12 @@
                 $account->setPassword($password);
                 $account->setBio($bio);
                 $account->setRoleID(0);
-                $account->setTeamID(0);
                 $account->setImgURL($imgurl);
                 $account->setDateOfBirth($dateofbirth);
                 $account->setLocation($location);
 
                 date_default_timezone_set('America/New_York');
-                $createdate = date('m/d/Y h:i:s a', time());
-
+                $createdate = date('Y-m-d H:i:s');
                 $account->setCreateDate($createdate);
                 $account->save();
                 header("location:../login.php");

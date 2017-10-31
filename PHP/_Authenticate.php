@@ -22,7 +22,7 @@
 		}
 		if($returnValue)
 		{
-			$accountList = Accounts::search("","","",$email, $password,"","","","","","","");
+			$accountList = Accounts::search("","","",$email, $password,"","","","","","");
 			if($accountList != "")
 			{
 				foreach($accountList as $acct)
@@ -33,7 +33,6 @@
 					$email = $acct->getEmail();
 					$password = $acct->getPassword();
 					$roleid = $acct->getRoleID();
-					$teamid = $acct->getTeamID();
 				}
 				session_start();
 				$_SESSION["LoggedIn"] = true;

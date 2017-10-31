@@ -87,9 +87,6 @@ $imgurl = $account->getImgURL();
                             <div class="col-sm-6">
                                 <b>Role ID: </b><?php echo $account->getRoleID(); ?>
                             </div>
-                            <div class="col-sm-6">
-                                <b>Team ID: </b><?php echo $account->getTeamID(); ?>
-                            </div>
                         </div>
                         <hr>
                         <h4>Bio</h4>
