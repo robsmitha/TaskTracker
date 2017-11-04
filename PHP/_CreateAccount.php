@@ -77,6 +77,7 @@
 		{
             if(isset($_POST["editaccountid"]))
             {
+                $currentDate = date('Y-m-d H:i:s');
                 $account = new Accounts();
                 $account->setAccountID($_POST["editaccountid"]);
                 $account->setFirstName($name);
@@ -88,7 +89,7 @@
                 $account->setImgURL($imgurl);
                 $account->setDateOfBirth($dateofbirth);
                 $account->setLocation($location);
-                $account->setCreateDate($_POST["editcreatedate"]);
+                $account->setCreateDate($currentDate);
                 $account->save();
                 $transferid = $_POST["editaccountid"];
                 header("location:../ViewAccount.php?accountid=$transferid");
