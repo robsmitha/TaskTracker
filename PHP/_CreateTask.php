@@ -1,7 +1,7 @@
 <?php
 session_start();
 $reporteracoountid = $_SESSION["AccountID"];
-	include "../DAL/tasks.php";
+    include_once($_SERVER['DOCUMENT_ROOT']."/DAL/tasks.php");
 
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{

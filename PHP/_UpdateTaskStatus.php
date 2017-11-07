@@ -23,8 +23,8 @@
 	{
 		header("location:../index.php");
 	}
-	
-	include "../DAL/tasks.php";
+
+include_once($_SERVER['DOCUMENT_ROOT']."/DAL/tasks.php");
 	$task = new Tasks();	
 	$task->load($taskid);	//load this task to change status type	
 	$task->setStatusTypeID($statustypeid);//record dates	

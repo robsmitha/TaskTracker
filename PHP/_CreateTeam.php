@@ -1,5 +1,5 @@
 <?php
-include "../DAL/teams.php";
+include_once($_SERVER['DOCUMENT_ROOT']."/DAL/teams.php");
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {

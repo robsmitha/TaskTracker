@@ -1,5 +1,5 @@
 <?php
-	include "../DAL/projects.php";
+    include_once($_SERVER['DOCUMENT_ROOT']."/DAL/projects.php");
 
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
