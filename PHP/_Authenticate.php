@@ -1,8 +1,6 @@
 <?php
-/*
- * NO LONGER IN USE - NOW HANDLED BY Utilities/Authentication.php
- */
-	include "../DAL/accounts.php";
+
+	include_once($_SERVER['DOCUMENT_ROOT']."/DAL/accounts.php");
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$returnValue = true;

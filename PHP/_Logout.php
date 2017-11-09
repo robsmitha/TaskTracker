@@ -4,5 +4,5 @@
 	$_SESSION["FirstName"] = "";
 	session_destroy();
 	
-	header("location:../login.php");
+	header("location:/login.php");
 ?>

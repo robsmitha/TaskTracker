@@ -1,5 +1,5 @@
 <?php
-include "../DAL/roles.php";
+include_once($_SERVER['DOCUMENT_ROOT']."/DAL/roles.php");
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
