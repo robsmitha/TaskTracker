@@ -320,4 +320,22 @@ class Accounts {
             die("The query yielded zero results.No rows found.");
         }
     }
+    public static function lookup($paramEmail) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_account_Lookup(?)');
+        $arg1 = Accounts::setNullValue($paramEmail);
+        $stmt->bind_param('s',$arg1);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if (!$result) die($conn->error);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return new Accounts($row['AccountID'],$row['FirstName'],$row['LastName'],$row['Email'],$row['Password'],$row['Bio'],$row['RoleID'],$row['ImgURL'],$row['DateOfBirth'],$row['Location'],$row['CreateDate']);
+        }
+        else {
+            return 0;
+        }
+    }
 }

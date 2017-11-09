@@ -1,9 +1,10 @@
 <?php
 #region validate session & query
 session_start();
-if($_SESSION["LoggedIn"] == "")
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
 {
-    header("location:login.php?msg=notloggedin");
+    header("location: login.php");
 }
 include "DAL/roles.php";
 if($_SERVER["REQUEST_METHOD"] == "GET")
@@ -24,6 +25,58 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     }
 }
 #endregion
+/*
+ * For Post Back (Submit)
+ */
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $returnValue = true;
+    if($_POST['dataRoleName'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $rolename = $_POST['dataRoleName'];
+    }
+    if($_POST['txtDescription'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $description = $_POST['txtDescription'];
+    }
+    if($returnValue)
+    {
+        if(isset($_POST["editroleid"]) && $_POST["editroleid"] > 0)
+        {
+            $rid = $_POST["editroleid"];
+            if(is_numeric($rid))
+            {
+                $role = new Roles();
+                $role->load($rid);
+                $role->setRole($rolename);
+                $role->setDescription($description);
+                $role->save();
+                header("location:../ViewRole.php?roleid=$rid");
+            }
+        }
+        else
+        {
+            $role = new Roles();
+            $role->load(0);
+            $role->setRole($rolename);
+            $role->setDescription($description);
+            $role->save();
+            header("location:../index.php?msg=Created Role: $rolename!");
+        }
+    }
+    else
+    {
+        header("location:../CreateRole.php?msg=validate");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                     </div>
                     <div class="card-body">
 
-                        <form id="formCreateRole" method="post" action="PHP/_CreateRole.php" onsubmit="return doValidation()">
+                        <form id="formCreateRole" method="post" onsubmit="return doValidation()">
                             <div class="form-group">
                                 <label for="dataRoleName">Role name</label>
                                 <input id="inputRoleName" class="form-control" name="dataRoleName" type="text" aria-describedby="nameHelp" placeholder="Enter role name" value="<?php if(isset($editrolename)) echo $editrolename ?>">

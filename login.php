@@ -1,19 +1,29 @@
 <?php
-if($_SERVER["REQUEST_METHOD"] == "GET")
-{
-	if(isset($_GET['msg']))	
-	{
-		if($_GET['msg'] == "validate")
-		{
-			$validationMsg = "Please review your entries!";
-		}
-		else if($_GET['msg'] == "noresults")
-		{
-			$validationMsg = "Account not found!";
-		}
-	}
+session_start();
+
+
+include_once("Utilities/Authentication.php");
+
+$errorMessage = "";
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $emailaddress = $_POST["emailaddress"];
+    $password = $_POST["password"];
+
+    $success = Authentication::authLogin($emailaddress,$password);
+    if ($success)
+    {
+        header("location: index.php");
+    }
+    else
+    {
+        $validationMsg = "Incorrect username or password. Try again.";
+    }
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,14 +42,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 <div class="card card-login mx-auto mt-5">
     <div class="card-header">Login</div>
           <div class="card-body">
-                <form id="formLogin" method="post" action="PHP/_Authenticate.php" onsubmit="return doValidation()">
+                <form id="formLogin" method="post" onsubmit="return doValidation()">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input class="form-control" id="inputEmail" name="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="off">
+                    <input class="form-control" id="emailaddress" name="emailaddress" type="email" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="off">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input class="form-control" id="inputPassword" name="exampleInputPassword1" type="password" placeholder="Password" autocomplete="off">
+                    <input class="form-control" id="password" name="password" type="password" placeholder="Password" autocomplete="off">
                   </div>
                   <div class="form-group">
                         <div class="form-check">
@@ -52,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                             <button class="btn btn-primary btn-block" type="submit">Login</button>
                         </div>
                         <div class="col-sm-6">
-                            <a class="btn btn-secondary btn-block" href="CreateAccount.php">Register</a>
+                            <a class="btn btn-secondary btn-block" href="register.php">Register</a>
                         </div>
                     </div>
                 </form>

@@ -1,8 +1,9 @@
 <?php
 session_start();
-if($_SESSION["LoggedIn"] == "")
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
 {
-	header("location:login.php?msg=notloggedin");
+    header("location: login.php");
 }
 
 
@@ -32,8 +33,85 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         }
     }
 }
+/*
+ * For Post Back (Submit)
+ */
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $returnValue = true;
+    if($_POST['ProjectName'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $projectname = $_POST['ProjectName'];
+    }
+    //img url
+    if($_POST['ProjectImgURL'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $imageURL = $_POST['ProjectImgURL'];
+    }
+    //Project url
+    if($_POST['ProjectURL'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $projecturl = $_POST['ProjectURL'];
+    }
 
-
+    //desc
+    if($_POST['txtDescription'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $description = $_POST['txtDescription'];
+    }
+    $projectcategorytypeid = $_POST['ddlProjectCategoryTypes'];
+    $leadaccountid = $_POST['ddlProjectLeadAccountID'];
+    if($returnValue)
+    {
+        if(isset($_POST["editprojectid"]) && is_numeric($_POST["editprojectid"]))
+        {
+            $pid = $_POST["editprojectid"];
+            $project = new Projects();
+            $project->setProjectId($pid);	//new acct
+            $project->setProjectName($projectname);
+            $project->setProjectDescription($description);
+            $project->setImgURL($imageURL);
+            $project->setProjectURL($projecturl);
+            $project->setProjectLeadAccountID($leadaccountid);
+            $project->setProjectCategoryID($projectcategorytypeid);
+            $project->save();
+            header("location:../ViewProject.php?projectid=$pid");
+        }
+        else
+        {
+            $project = new Projects();
+            $project->setProjectId(0);	//new acct
+            $project->setProjectName($projectname);
+            $project->setProjectDescription($description);
+            $project->setImgURL($imageURL);
+            $project->setProjectURL($projecturl);
+            $project->setProjectLeadAccountID($leadaccountid);
+            $project->setProjectCategoryID($projectcategorytypeid);
+            $project->save();
+            header("location:../index.php?msg=Created Project: $projectname!");
+        }
+    }
+    else
+    {
+        header("location:../CreateProject.php?msg=Please review your entries.");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +153,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                   </div>
                   <div class="card-body">
 
-                    <form id="formRegister" method="post" action="PHP/_CreateProject.php" onsubmit="return doValidation()">
+                    <form id="formRegister" method="post" onsubmit="return doValidation()">
                         <input type="hidden" name="editprojectid" value="<?php echo $editprojectid ?>">
                         <div class="form-group">
                             <label for="ProjectName">Project name</label>

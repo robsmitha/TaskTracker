@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * NO LONGER IN USE - NOW HANDLED BY Utilities/Authentication.php
+ */
 	include "../DAL/accounts.php";
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{

@@ -101,8 +101,8 @@ $reporteracoountid = $_SESSION["AccountID"];
                 // Then call the date functions
                 $date = date('Y-m-d H:i:s');
                 $task->setCreateDate($date);
-                //$task->setCloseDate(0);
-                //$task->setReopenDate(0);
+                $task->setCloseDate(NULL);
+                $task->setReopenDate(NULL);
                 $task->save();
                 header("location:../index.php?msg=Created Task: $taskname!");
             }

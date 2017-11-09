@@ -1,8 +1,11 @@
 <?php
 //Check Session
 session_start();
-if($_SESSION["LoggedIn"] == "")
-    header("location:login.php?msg=notloggedin");
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
+{
+    header("location: login.php");
+}
 
 include "DAL/tasks.php";
 include "DAL/accounts.php";

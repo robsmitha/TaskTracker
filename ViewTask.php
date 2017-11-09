@@ -1,9 +1,10 @@
 <?php
 //Check Session
 session_start();
-if($_SESSION["LoggedIn"] == "")
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
 {
-	header("location:login.php?msg=notloggedin");
+    header("location: login.php");
 }
 //Check Query
 if($_SERVER["REQUEST_METHOD"] == "GET")

@@ -1,6 +1,7 @@
 <?php
-$session_accountid = $_SESSION["AccountID"];
-$session_roleid = $_SESSION["RoleID"];
+
+$session_accountid = SessionManager::getAccountID();
+$session_roleid = SessionManager::getRoleID();
 include "DAL/rolestopermissions.php";
 
 
@@ -24,7 +25,7 @@ include "DAL/rolestopermissions.php";
         </li>
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Update Account Information">
               <a class="nav-link" href="ViewAccount.php?accountid=<?php echo $session_accountid ?>">
-                  <i class="fa fa-fw fa-user"></i>
+                  <i class="fa fa-fw fa-user-circle"></i>
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
@@ -45,16 +46,7 @@ include "DAL/rolestopermissions.php";
               $PermissionsList = Rolestopermissions::loadbyroleid($session_roleid);
               foreach($PermissionsList as $permission)
               {
-                  if($permission->getPermissionID() == 17){  //Can Search tasks
-                ?>
-                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Tasks">
-                          <a class="nav-link" href="SearchTasks.php">
-                              <i class="fa fa-fw fa-search"></i>
-                              <span class="nav-link-text">Search Tasks</span>
-                          </a>
-                      </li>
-              <?php
-                  }
+
                   if($permission->getPermissionID() == 12){     //Can Create/Edit Tasks
                 ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
@@ -85,22 +77,46 @@ include "DAL/rolestopermissions.php";
                       </li>
               <?php
                   }
-                  if($permission->getPermissionID() == 16){  //Can Search Accounts
-                      ?>
-                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Accounts">
-                          <a class="nav-link" href="SearchAccounts.php">
-                              <i class="fa fa-fw fa-search"></i>
-                              <span class="nav-link-text">Search Accounts</span>
-                          </a>
-                      </li>
-                      <?php
-                  }
+
+
+
                   if($permission->getPermissionID() == 14){  //Can Create/Edit Teams
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Team">
                           <a class="nav-link" href="CreateTeam.php">
                               <i class="fa fa-fw fa-users"></i>
                               <span class="nav-link-text">Create Team</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
+
+                  if($permission->getPermissionID() == 1){  //Can Create/Edit Accounts
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Account">
+                          <a class="nav-link" href="CreateAccount.php">
+                              <i class="fa fa-fw fa-user-plus"></i>
+                              <span class="nav-link-text">Create Account</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
+                  if($permission->getPermissionID() == 17){  //Can Search tasks
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Tasks">
+                          <a class="nav-link" href="SearchTasks.php">
+                              <i class="fa fa-fw fa-search"></i>
+                              <span class="nav-link-text">Search Tasks</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
+                  if($permission->getPermissionID() == 16){  //Can Search Accounts
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Accounts">
+                          <a class="nav-link" href="SearchAccounts.php">
+                              <i class="fa fa-fw fa-search"></i>
+                              <span class="nav-link-text">Search Accounts</span>
                           </a>
                       </li>
                       <?php

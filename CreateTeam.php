@@ -1,9 +1,10 @@
 <?php
 #region validate session & query
 session_start();
-if($_SESSION["LoggedIn"] == "")
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
 {
-    header("location:login.php?msg=notloggedin");
+    header("location: login.php");
 }
 include "DAL/teams.php";
 if($_SERVER["REQUEST_METHOD"] == "GET")
@@ -24,6 +25,60 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
     }
 }
 #endregion
+/*
+ * For Post Back (Submit)
+ */
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $returnValue = true;
+    if($_POST['dataTeamName'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $rolename = $_POST['dataTeamName'];
+    }
+    if($_POST['txtDescription'] == "")
+    {
+        $returnValue = false;
+    }
+    else
+    {
+        $description = $_POST['txtDescription'];
+    }
+    if($returnValue)
+    {
+        if(isset($_POST["editteamid"]) && $_POST["editteamid"] > 0)
+        {
+            $tid = $_POST["editteamid"];
+            if(is_numeric($tid))
+            {
+                $team = new Teams();
+                $team->load($tid);
+                $team->setName($teamname);
+                $team->setDescription($description);
+                $team->save();
+                header("location:../ViewTeam.php?teamid=$tid");
+            }
+        }
+        else
+        {
+            $team = new Teams();
+            $team->load(0);
+            $team->setName($teamname);
+            $team->setDescription($description);
+            $team->save();
+
+            $tid = $team->getTeamID();
+            header("location:../ViewTeam.php?teamid=$tid");
+        }
+    }
+    else
+    {
+        header("location:../CreateTeam.php?msg=validate");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +130,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                         <?php } ?>
                     </div>
                     <div class="card-body">
-                        <form id="formCreateRole" method="post" action="PHP/_CreateRole.php" onsubmit="return doValidation()">
+                        <form id="formCreateRole" method="post" onsubmit="return doValidation()">
                             <div class="form-group">
                                 <label for="dataTeamName">Team name</label>
                                 <input id="inputTeamName" class="form-control" name="dataTeamName" type="text" aria-describedby="nameHelp" placeholder="Enter team name" value="<?php if(isset($editteamname)) echo $editteamname ?>">
