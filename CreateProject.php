@@ -91,7 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $project->setProjectLeadAccountID($leadaccountid);
             $project->setProjectCategoryID($projectcategorytypeid);
             $project->save();
-            header("location:../ViewProject.php?projectid=$pid");
+            header("location:ViewProject.php?projectid=$pid");
         }
         else
         {
@@ -104,12 +104,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $project->setProjectLeadAccountID($leadaccountid);
             $project->setProjectCategoryID($projectcategorytypeid);
             $project->save();
-            header("location:../index.php?msg=Created Project: $projectname!");
+            header("location:index.php?msg=Created Project: $projectname!");
         }
     }
     else
     {
-        header("location:../CreateProject.php?msg=Please review your entries.");
+        header("location:CreateProject.php?msg=Please review your entries.");
     }
 }
 ?>

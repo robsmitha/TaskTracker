@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $rolename = $_POST['dataTeamName'];
+        $teamname = $_POST['dataTeamName'];
     }
     if($_POST['txtDescription'] == "")
     {
@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 $team->setName($teamname);
                 $team->setDescription($description);
                 $team->save();
-                header("location:../ViewTeam.php?teamid=$tid");
+                header("location:ViewTeam.php?teamid=$tid");
             }
         }
         else
@@ -71,12 +71,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $team->save();
 
             $tid = $team->getTeamID();
-            header("location:../ViewTeam.php?teamid=$tid");
+            header("location:ViewTeam.php?teamid=$tid");
         }
     }
     else
     {
-        header("location:../CreateTeam.php?msg=validate");
+        header("location:CreateTeam.php?msg=validate");
     }
 }
 ?>
@@ -171,7 +171,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
             <div class="col-lg-4">
-               <!-- <?php include "teams.php" ?> -->
+                <?php include "teams.php" ?>
             </div>
         </div>
     </div><!-- /.container-fluid-->

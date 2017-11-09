@@ -154,7 +154,10 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 							<b>Type: </b><?php echo $tasktype->getTaskType(); ?>
 						</div>
 						<div class="col-sm-6">
-							<b>Project: </b><?php echo $project->getProjectName(); ?>
+							<b>Project: </b>
+                            <a href="ViewProject.php?projectid=<?php echo $project->getProjectId(); ?>" title="View <?php echo $project->getProjectName(); ?>">
+                                <?php echo $project->getProjectName(); ?>
+                            </a>
 						</div>
 					</div>
 					<hr>

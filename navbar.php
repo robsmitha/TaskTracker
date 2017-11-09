@@ -8,9 +8,9 @@ include "DAL/rolestopermissions.php";
 ?>
 <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.php">
-		<i class="fa fa-cloud"></i> TaskTracker
-		<!--<img src="tasktrackerlogo.png" style="height: 50px;">-->
+    <a href="index.php">
+		<!--<i class="fa fa-cloud"></i> TaskTracker-->
+		<img src="tasktrackerlogo.png" style="height: 65px; margin-top: -10px;">
 	</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -71,7 +71,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Role">
                           <a class="nav-link" href="CreateRole.php">
-                              <i class="fa fa-fw fa-user-plus"></i>
+                              <i class="fa fa-fw fa-lock"></i>
                               <span class="nav-link-text">Create Role</span>
                           </a>
                       </li>

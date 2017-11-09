@@ -88,7 +88,11 @@ $imgurl = $account->getImgURL();
                                 <b>Create Date: </b><?php echo $account->getCreateDate(); ?>
                             </div>
                             <div class="col-sm-6">
-                                <b>Role ID: </b><?php echo $account->getRoleID(); ?>
+                                <b>Role ID: </b>
+                                <a href="ViewRole.php?roleid=<?php echo $account->getRoleID(); ?>" title="View <?php echo $account->getRoleID(); ?> ?>">
+                                    <?php echo $account->getRoleID(); ?>
+                                </a>
+
                             </div>
                         </div>
                         <hr>

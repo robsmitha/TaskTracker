@@ -1,10 +1,11 @@
 <?php
 //Check Session
 session_start();
-if($_SESSION["LoggedIn"] == "")
-    header("location:login.php?msg=notloggedin");
-
-
+include_once("Utilities/SessionManager.php");
+if(SessionManager::getAccountID() == 0)
+{
+    header("location: login.php");
+}
 //Check Query
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
@@ -22,8 +23,8 @@ else
     header("location:index.php");
 }
 include "DAL/teams.php";
-$role = new Roles();
-$role->load($roleid);
+$team = new Teams();
+$team->load($teamid);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +43,7 @@ $role->load($roleid);
                 <a href="index.php">Dashboard</a>
             </li>
             <li class="breadcrumb-item active">
-                <?php echo $role->getRole(); ?>
+                <?php echo $team->getName(); ?>
             </li>
         </ol>
 
@@ -54,23 +55,23 @@ $role->load($roleid);
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="text-left">
-                                    <?php echo $role->getRole(); ?>
+                                    <?php echo $team->getName(); ?>
                                 </div>
                             </div>
                             <div class="col-sm-3">
-                                <a class="btn btn-secondary pull-right" href="CreateRole.php?cmd=edit&roleid=<?php echo $roleid ?>">Edit</a>
+                                <a class="btn btn-secondary pull-right" href="CreateTeam.php?cmd=edit&teamid=<?php echo $teamid ?>">Edit</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <h4>Description</h4>
-                        <p><?php echo $role->getDescription(); ?></p>
+                        <p><?php echo $team->getDescription(); ?></p>
                     </div>
                 </div>
 
             </div>
             <div class="col-lg-4">
-                <?php include "roles.php" ?>
+                <?php include "teams.php" ?>
             </div>
         </div>
 

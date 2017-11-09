@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 $role->setRole($rolename);
                 $role->setDescription($description);
                 $role->save();
-                header("location:../ViewRole.php?roleid=$rid");
+                header("location:ViewRole.php?roleid=$rid");
             }
         }
         else
@@ -69,12 +69,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $role->setRole($rolename);
             $role->setDescription($description);
             $role->save();
-            header("location:../index.php?msg=Created Role: $rolename!");
+            header("location:index.php?msg=Created Role: $rolename!");
         }
     }
     else
     {
-        header("location:../CreateRole.php?msg=validate");
+        header("location:CreateRole.php?msg=validate");
     }
 }
 ?>
