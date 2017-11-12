@@ -8,7 +8,7 @@
         <div class="text-center">
 		<b></b>
 
-          <small><?php if(isset($_SESSION["FirstName"])) echo "Welcome, ". ucfirst($_SESSION["FirstName"]);  ?> &middot; <span class="text-muted">Copyright © TaskTracker <?php echo date("Y"); ?></span></small>
+          <small>Hi, <?php echo SessionManager::getFirstName(); ?> &middot; <span class="text-muted">Copyright © TaskTracker <?php echo date("Y"); ?></span></small>
         </div>
       </div>
     </footer>
@@ -29,8 +29,17 @@
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="php/_Logout.php">Logout</a>
+              <button class="btn btn-primary" id="logout" onclick="logout(this.id)">Logout</button>
           </div>
         </div>
       </div>
     </div>
+<script>
+    function logout(e) {
+        if(e == "logout"){
+            var kill = "SessionManager::ResetSession();";
+            window.location = "login.php"
+        }
+    }
+
+</script>

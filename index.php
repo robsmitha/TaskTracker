@@ -35,13 +35,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
       <?php include "cardcounters.php" ?>
         <div class="row">
             <div class="col-lg-8">
-                <?php
-                    $paramAssigneeaccountid = $_SESSION["AccountID"];
-                    include "tasks.php";
-                ?>
+                <?php //include "tasks.php"; ?>
             </div>
             <div class="col-lg-4">
-                <?php include "projects.php" ?>
+                <?php //include "projects.php" ?>
             </div>
         </div>
     </div>

@@ -17,6 +17,7 @@ class Authentication
         if($account != null && password_verify($password, $account->getPassword())) {
             SessionManager::setAccountID($account->getAccountID());
             SessionManager::setRoleID($account->getRoleID());
+            SessionManager::setFirstName($account->getFirstName());
             return true;
         }
         else {

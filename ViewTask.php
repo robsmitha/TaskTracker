@@ -2,6 +2,12 @@
 //Check Session
 session_start();
 include_once("Utilities/SessionManager.php");
+include "DAL/tasks.php";
+include "DAL/prioritytypes.php";
+include "DAL/statustypes.php";
+include "DAL/tasktypes.php";
+include "DAL/projects.php";
+include "DAL/accounts.php";
 if(SessionManager::getAccountID() == 0)
 {
     header("location: login.php");
@@ -18,45 +24,76 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 		header("location:index.php");
 	}
 }
-else
+
+if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
 {
-	header("location:index.php");
-}	
+    if(isset($_POST['statustypeid']))	//validate query string
+    {
+        $statustypeid = $_POST['statustypeid'];
+    }
+    else
+    {
+        header("location:.index.php");
+    }
+    if(isset($_POST['taskid']))	//validate query string
+    {
+        $taskid = $_POST['taskid'];
+    }
+    else
+    {
+        header("location:.index.php");
+    }
+    $task = new Tasks();
+    $task->load($taskid);	//load this task to change status type
+    $task->setStatusTypeID($statustypeid);//record dates
+    if($statustypeid == 6) //closed
+    {
+        date_default_timezone_set('America/New_York');
+        $date = date('Y-m-d H:i:s');
+        $task->setCloseDate($date);
+    }
+    if($statustypeid == 5)
+    {
+        date_default_timezone_set('America/New_York');
+        $date = date('Y-m-d H:i:s');
+        $task->setReopenDate($date);
+    }
+
+    $task->save();
+    $id = $task->getTaskID();
+    header("location:ViewTask.php?taskid=$id");
+}
+
 //we good, load task for this task id
-include "DAL/tasks.php";
 $task = new Tasks();
 $task->load($taskid);
 
 //now load by foreign keys to fill in form values from type ids
 
 //Priority type
-include "DAL/prioritytypes.php";
 $prioritytype = new Prioritytypes();
 $prioritytype->load($task->getPriorityTypeID());
 
 //status type
-include "DAL/statustypes.php";
 $statustype = new Statustypes();
 $statustype->load($task->getStatusTypeID());
 
 //Task Types
-include "DAL/tasktypes.php";
 $tasktype = new Tasktypes();
 $tasktype->load($task->getTaskTypeID());
 
 //Project
-include "DAL/projects.php";
 $project = new Projects();
 $project->load($task->getProjectID());
 $projectid = $project->getProjectId();
 
 //Account
-include "DAL/accounts.php";
 $reporter = new Accounts();
 $reporter->load($task->getReporterAccountID());	//reporter obj
 
 $assignee = new Accounts();
 $assignee->load($task->getAssigneeAccountID());	//assignee obj
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,8 +129,37 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
 							<h3><?php echo $task->getTaskName(); ?></h3>
 						</div>
 						<div class="col-sm-2">
-
-						<div class="btn-group pull-right">
+                        <script>
+                            function setStatustType(e) {
+                                switch (e){
+                                    case "STATUS_1":	//open
+                                        $("#hfstatustypeid").val(1);
+                                        break;
+                                    case "STATUS_2":	//in progress
+                                        $("#hfstatustypeid").val(2);
+                                        break;
+                                    case "STATUS_3":	//resolved
+                                        $("#hfstatustypeid").val(3);
+                                        break;
+                                    case "STATUS_4":	//ready for testing
+                                        $("#hfstatustypeid").val(4);
+                                        break;
+                                    case "STATUS_5":	//reopened
+                                        $("#hfstatustypeid").val(5);
+                                        break;
+                                    case "STATUS_6":	//closed
+                                        $("#hfstatustypeid").val(6);
+                                        break;
+                                    default:
+                                    //do nothing
+                                    break;
+                                }
+                                return true;
+                            }
+                        </script>
+						<form method="post" class="btn-group pull-right">
+                            <input id="hfstatustypeid" type="hidden" name="statustypeid">
+                            <input type="hidden" name="taskid" value="<?php echo $taskid ?>">
                             <a class="btn btn-secondary" href="CreateTask.php?cmd=edit&taskid=<?php echo $taskid ?>">Edit</a>
 							<?php
                             if(true)    //$task->getAssigneeAccountID() == $_SESSION["AccountID"]
@@ -102,32 +168,44 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
                                 switch($statustypeid)
                                 {
                                     case 1:	//open
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=2' class='btn btn-secondary'>Start Progress</a>";
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_2" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Start Progress</button>
+                                        <button type="submit" id="STATUS_3" class='btn btn-secondary' onclick="return setStatustType(this.id)">Resolve</button>
+                                        <?php
                                         $badgecssclass = "primary";
                                         break;
                                     case 2:	//in progress
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=1' class='btn btn-secondary'>Stop Progress</a>";
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_1" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Stop Progress</button>
+                                        <button type="submit" id="STATUS_3" class='btn btn-secondary' onclick="return setStatustType(this.id)">Resolve</button>
+                                        <?php
                                         $badgecssclass = "light";
                                         break;
                                     case 3:	//resolved
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_5" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Reopen</button>
+                                        <button type="submit" id="STATUS_4" class='btn btn-secondary' onclick="return setStatustType(this.id)">Ready For Testing</button>
+                                        <?php
                                         $badgecssclass = "success";
                                         break;
                                     case 4:	//ready for testing
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=6' class='btn btn-secondary'>Close</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_5" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Reopen</button>
+                                        <button type="submit" id="STATUS_6" class='btn btn-secondary' onclick="return setStatustType(this.id)">Close</button>
+                                        <?php
                                         $badgecssclass = "warning";
                                         break;
                                     case 5:	//reopened
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=4' class='btn btn-secondary'>Ready For Testing</a>";
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=3' class='btn btn-secondary'>Resolve</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_4" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Ready For Testing</button>
+                                        <button type="submit" id="STATUS_3" class='btn btn-secondary' onclick="return setStatustType(this.id)">Resolve</button>
+                                        <?php
                                         $badgecssclass = "danger";
                                         break;
                                     case 6:	//closed
-                                        echo "<a href='PHP/_UpdateTaskStatus.php?taskid=$taskid&statustypeid=5' class='btn btn-secondary'>Reopen</a>";
+                                        ?>
+                                        <button type="submit" id="STATUS_5" class='btn btn-secondary' onclick="return setStatustType(this.id)" name="">Reopen</button>
+                                        <?php
                                         $badgecssclass = "dark";
                                         break;
                                     default:
@@ -136,7 +214,7 @@ $assignee->load($task->getAssigneeAccountID());	//assignee obj
                                 }
                             }
 							?>
-						</div>
+						</form>
 						</div>
 					</div>
 					

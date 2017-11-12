@@ -9,21 +9,6 @@
 
 class SessionManager
 {
-
-    public static function getTestMessage() {
-        if (isset($_SESSION['msg']))
-            return $_SESSION['msg'];
-        else
-            return "";
-
-    }
-
-    public static function setTestMessage($arg1){
-        $_SESSION['msg'] = $arg1;
-    }
-
-
-
     public static function getAccountID() {
         if (isset($_SESSION['AccountID']))
             return $_SESSION['AccountID'];
@@ -47,6 +32,25 @@ class SessionManager
 
     public static function setRoleID($arg1){
         $_SESSION['RoleID'] = $arg1;
+    }
+    //for name
+    public static function getFirstName() {
+        if (isset($_SESSION['FirstName']))
+            return $_SESSION['FirstName'];
+        else
+            return 0;
+
+    }
+
+    public static function setFirstName($arg1){
+        $_SESSION['FirstName'] = $arg1;
+    }
+
+    public static function ResetSession(){
+        $_SESSION['FirstName'] = "";
+        $_SESSION['RoleID'] = "";
+        $_SESSION['AccountID'] = "";
+        session_destroy();
     }
 }
 
