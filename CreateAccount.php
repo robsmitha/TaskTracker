@@ -2,13 +2,123 @@
 session_start();
 include_once("Utilities/SessionManager.php");
 include_once("Utilities/Authentication.php");
-//include_once("Utilities/Mailer.php");
+include_once("Utilities/Mailer.php");
 include_once("DAL/accounts.php");
 
 if(SessionManager::getAccountID() == 0)
 {
     header("location: login.php");
 }
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $returnValue = true;
+    $defaultRoleId = 2; //Dev role
+    $_POST['exampleInputName'] == "" ? $returnValue = false : $name = $_POST['exampleInputName'];
+    $_POST['exampleInputLastName'] == "" ? $returnValue = false : $lastname = $_POST['exampleInputLastName'];
+    $_POST['exampleInputEmail1'] == "" ?  $returnValue = false : $email = $_POST['exampleInputEmail1'];
+
+    if(isset($_POST["hfaccountid"]) && $_POST["hfaccountid"] > 0){
+
+    }
+    else{
+        if($_POST['exampleInputPassword1'] == "")
+        {
+            $returnValue = false;
+        }
+        else
+        {
+            $password = $_POST['exampleInputPassword1'];
+        }
+        if($_POST['exampleConfirmPassword'] == "")
+        {
+            $returnValue = false;
+        }
+        else
+        {
+            if($_POST['exampleConfirmPassword'] != $password)   //verify passwords match
+            {
+                $returnValue = false;
+            }
+            else
+            {
+                $confirmPassword = $_POST['exampleConfirmPassword'];
+            }
+        }
+    }
+
+    $_POST['dataLocation'] == "" ? $returnValue = false : $location = $_POST['dataLocation'];
+    $_POST['dataDOB'] == "" ? $returnValue = false : $dateofbirth = $_POST['dataDOB'];
+    //bio is optional
+    $bio = $_POST['dataBio'];
+    $imgurl = $_POST['dataImageURL'];
+
+
+    if($returnValue)
+    {
+        if(isset($_POST["hfaccountid"]) && $_POST["hfaccountid"] > 0)
+        {
+            $accountid = $_POST["hfaccountid"];
+            if(is_numeric($accountid))
+            {
+                $account = new Accounts();
+                $account->load($accountid);
+                if($accountid == $account->getAccountID()){
+                    $account->setAccountID($account->getAccountID());
+                    $account->setCreateDate($account->getCreateDate());
+                    $account->setRoleID($account->getRoleID());
+
+                    $account->setFirstName($name);
+                    $account->setLastName($lastname);
+                    $account->setEmail($email);
+                    $account->setLocation($location);
+                    $account->setDateOfBirth($dateofbirth);
+                    $account->setBio($bio);
+                    $account->setImgURL($imgurl);
+                    $account->save();
+                    $accountid = $account->getAccountID();
+                    header("location:ViewAccount.php?accountid=$accountid");    //call get
+                }
+
+            }
+        }
+        else
+        {
+            //new acct
+            $account = Accounts::lookup($email);
+            if ($account != null) {
+                // This email is already taken
+                $validationMsg = "The provided email is already in use. Please try another email.";
+            }
+            else {
+                $currentDate = date('Y-m-d H:i:s');
+                $defaultRoleId = 1; // This corresponds to the Admin role
+
+                $account = Authentication::createAccount($name, $lastname, $email, $password,$bio, $defaultRoleId, $imgurl, $dateofbirth, $location, $currentDate);
+                if ($account == null) {
+                    // Something went wrong while attempting to create this user
+                    $validationMsg = "An error occurred during the creation of this user account. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
+                }
+                else {
+                    // Set session values for successful login
+                    SessionManager::setAccountID($account->getAccountID());
+                    SessionManager::setRoleID($account->getRoleID());
+                    // Send registration email
+                    Mailer::sendRegistrationEmail($account->getEmail());
+                    // Redirect to New Acct
+                    $accountid = $account->getAccountID();
+                    header("location:ViewAccount.php?accountid=$accountid");
+                }
+
+            }
+        }
+
+
+
+
+    }
+}
+
 
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
@@ -44,71 +154,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 }
 
 
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-    $returnValue = true;
-    $_POST['exampleInputName'] == "" ? $returnValue = false : $name = $_POST['exampleInputName'];
-    $_POST['exampleInputLastName'] == "" ? $returnValue = false : $lastname = $_POST['exampleInputLastName'];
-    $_POST['exampleInputEmail1'] == "" ?  $returnValue = false : $email = $_POST['exampleInputEmail1'];
-    if($_POST['exampleInputPassword1'] == "")
-    {
-        $returnValue = false;
-    }
-    else
-    {
-        $password = $_POST['exampleInputPassword1'];
-    }
-    if($_POST['exampleConfirmPassword'] == "")
-    {
-        $returnValue = false;
-    }
-    else
-    {
-        if($_POST['exampleConfirmPassword'] != $password)   //verify passwords match
-        {
-            $returnValue = false;
-        }
-        else
-        {
-            $confirmPassword = $_POST['exampleConfirmPassword'];
-        }
-    }
-    $_POST['dataLocation'] == "" ? $returnValue = false : $location = $_POST['dataLocation'];
-    $_POST['dataDOB'] == "" ? $returnValue = false : $dateofbirth = $_POST['dataDOB'];
-    //bio is optional
-    $bio = $_POST['dataBio'];
-    $imgurl = $_POST['dataImageURL'];
 
-
-    if($returnValue)
-    {
-        $account = Accounts::lookup($email);
-        if ($account != null) {
-            // This email is already taken
-            $errorMessage = "The provided email is already in use. Please try another email.";
-        }
-        else {
-            $currentDate = date('Y-m-d H:i:s');
-            $defaultRoleId = 1; // This corresponds to the Admin role
-
-            $account = Authentication::createAccount($name, $lastname, $email, $password,$bio, $defaultRoleId, $imgurl, $dateofbirth, $location, $currentDate);
-            if ($account == null) {
-                // Something went wrong while attempting to create this user
-                $validationMsg = "An error occurred during the creation of this user account. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
-            }
-            else {
-                // Set session values for successful login
-                //SessionManager::setAccountID($account->getAccountID());
-                //SessionManager::setRoleID($account->getRoleID());
-                // Send registration email
-                //Mailer::sendRegistrationEmail($account->getEmail(),$account->getEmail());
-                $accountid = $account->getAccountID();
-                // Redirect to newly created profile
-                header("location: ViewAccount.php?accountid=$accountid");
-            }
-        }
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -201,8 +247,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 <label for="dataBio">Bio Description <small class="text-muted">(optional)</small></label>
                                 <textarea id="inputBio" name="dataBio" class="form-control" rows="5"><?php if(isset($editbio)) echo $editbio; ?></textarea>
                             </div>
-                            <input type="hidden" name="editaccountid" value="<?php if(isset($editaccountid)) echo $editaccountid; ?>">
-                            <input type="hidden" name="editcreatedate" value="<?php if(isset($editcreatedate)) echo $editcreatedate; ?>">
+                            <input type="hidden" name="hfaccountid" value="<?php if(isset($editaccountid)) echo $editaccountid; ?>">
                             <div class="form-group">
                                 <?php if(isset($editaccountid)) { ?>
                                     <div class="row">

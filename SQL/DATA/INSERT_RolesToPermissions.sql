@@ -1,4 +1,4 @@
---Administrator (RoleID: 1)
+-- Administrator (RoleID: 1)
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (1, 1, 1);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (2, 1, 2);
@@ -33,7 +33,7 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (17, 1, 17);
 
---Developer
+-- Developer
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (18, 2, 12);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (19, 2, 2);
@@ -44,7 +44,7 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (22, 2, 16);
 
---Project Manager
+-- Project Manager
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (23, 3, 12);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (24, 3, 2);
@@ -65,7 +65,7 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (32, 3, 13);
 
---Quality Assurance
+-- Quality Assurance
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (33, 4, 12);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (34, 4, 2);
@@ -76,7 +76,7 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (37, 4, 16);
 
---Client Role
+-- Client Role
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (38, 5, 12);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (39, 5, 2);
@@ -87,7 +87,7 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (42, 5, 8);
 
---Read Only
+-- Read Only
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (43, 6, 17);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (44, 6, 16);

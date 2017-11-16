@@ -13,6 +13,90 @@ include "DAL/statustypes.php";
 include "DAL/tasks.php";
 include "DAL/tasktypes.php";
 include "DAL/projects.php";
+
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+//hfisEdit is set in the javascript submit function
+    if($_POST["hfisEdit"] == "true") {
+
+        $isEdit = true;
+
+    }
+
+    $returnValue = true;
+    $_POST['TaskName'] == "" ? $returnValue = false : $taskname = $_POST['TaskName'];
+    $_POST['txtDescription'] == "" ? $returnValue = false : $description = $_POST['txtDescription'];
+    $_POST['ddlTaskType'] == 0 ? $returnValue = false : $tasktype =  $_POST['ddlTaskType'];
+    $_POST['ddlPriorityType'] == 0 ? $returnValue = false : $taskprioritytypeid = $_POST['ddlPriorityType'];
+    $_POST['ddlAssignee'] == 0 ? $returnValue = false : $taskassigneeaccountid = $_POST['ddlAssignee'];
+    $_POST['ddlProjects'] == 0 ? $returnValue = false : $taskprojectid = $_POST['ddlProjects'];
+    $returnValue = true;
+    if($returnValue)
+    {
+        if(isset($_POST["hftaskid"]) && $_POST["hftaskid"] > 0)
+        {
+            $tid = $_POST["hftaskid"];
+            if(is_numeric($tid))
+            {
+                $task = new Tasks();
+                $task->load($tid);
+                if($tid == $task->getTaskID()){
+                    $task->setTaskID($task->getTaskID());
+                    $task->setReporterAccountID($task->getTaskID());
+                    $task->setStatusTypeID($task->getStatusTypeID());
+                    $task->setCreateDate($task->getCreateDate());
+                    $task->setCloseDate($task->getCloseDate());
+                    $task->setReopenDate($task->getReopenDate());
+
+
+                    $task->setTaskName($taskname);
+                    $task->setTaskName($taskname);
+                    $task->setDescription($description);
+                    $task->setAssigneeAccountID($taskassigneeaccountid);
+                    $task->setTaskTypeID($tasktype);
+                    $task->setPriorityTypeID($taskprioritytypeid);
+                    $task->setProjectID($taskprojectid);
+                    $task->save();
+                    $tid = $task->getTaskID();
+                    header("location:ViewTask.php?taskid=$tid&edited=$isEdit");    //call get
+                }
+
+            }
+        }
+        else
+        {
+            $task = new Tasks();
+            $task->setTaskID(0);	//new task
+            $task->setTaskName($taskname);
+            $task->setDescription($description);
+            $task->setAssigneeAccountID($taskassigneeaccountid);
+            $task->setReporterAccountID(SessionManager::getAccountID());
+            $task->setStatusTypeID(1);		//set to open as default
+            $task->setTaskTypeID($tasktype);
+            $task->setPriorityTypeID($taskprioritytypeid);
+            $task->setProjectID($taskprojectid);
+            //record dates
+            date_default_timezone_set('America/New_York');
+
+            // Then call the date functions
+            $date = date('Y-m-d H:i:s');
+            $task->setCreateDate($date);
+            $task->setCloseDate(NULL);
+            $task->setReopenDate(NULL);
+            $task->save();
+            //grab id after save
+            $tid = $task->getTaskID();
+            header("location:ViewTask.php?taskid=$tid");
+        }
+
+
+
+
+    }
+
+
+}
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
     if(isset($_GET['msg']))
@@ -40,120 +124,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         }
     }
 }
-
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-    $returnValue = true;
-    if($_POST['TaskName'] == "")
-    {
-        $returnValue = false;
-    }
-    else
-    {
-        $taskname = $_POST['TaskName'];
-    }
-    //txtDescription
-    if($_POST['txtDescription'] == "")
-    {
-        $returnValue = false;
-    }
-    else
-    {
-        $description = $_POST['txtDescription'];
-    }
-    if($_POST['ddlTaskType'] == 0)
-    {
-        $returnValue = false;
-    }
-    else{
-        $tasktype =  $_POST['ddlTaskType'];
-    }
-
-    if($_POST['ddlPriorityType'] == 0)
-    {
-        $returnValue = false;
-    }
-    else{
-        $taskprioritytypeid = $_POST['ddlPriorityType'];
-    }
-
-    if($_POST['ddlAssignee'] == 0)
-    {
-        $returnValue = false;
-    }
-    else{
-        $taskassigneeaccountid = $_POST['ddlAssignee'];
-    }
-
-    if($_POST['ddlProjects'] == 0)
-    {
-        $returnValue = false;
-    }
-    else{
-        $taskprojectid = $_POST['ddlProjects'];
-    }
-
-
-    if($returnValue)
-    {
-        if(isset($_POST["edittaskid"]) && $_POST["edittaskid"] > 0) {
-            if (is_numeric($_POST["edittaskid"])) {
-                $tid = $_POST["edittaskid"];
-                $edittaskreporteraccountid = $_POST["edittaskreporteraccountid"] == 0 ? "" : $_POST["edittaskreporteraccountid"];
-                $edittaskstatustypeid = $_POST["edittaskstatustypeid"] == 0 ? "" : $_POST["edittaskstatustypeid"];
-                $edittaskcreatedate = isset($_POST["edittaskcreatedate"]) ? $_POST["edittaskcreatedate"] : "";
-                $edittaskclosedate = isset($_POST["edittaskclosedate"]) ? $_POST["edittaskclosedate"] : "";
-                $edittaskreopendate = isset($_POST["edittaskreopendate"]) ? $_POST["edittaskreopendate"] : "";
-
-                $task = new Tasks();
-                $task->setTaskID($tid);	//new task
-                $task->setTaskName($taskname);
-                $task->setDescription($description);
-                $task->setAssigneeAccountID($taskassigneeaccountid);
-                $task->setReporterAccountID($edittaskreporteraccountid);
-                $task->setStatusTypeID($edittaskstatustypeid);		//set to open as default
-                $task->setTaskTypeID($tasktype);
-                $task->setPriorityTypeID($taskprioritytypeid);
-                $task->setProjectID($taskprojectid);
-                $task->setCreateDate($edittaskcreatedate);
-                $task->setCloseDate($edittaskclosedate);
-                $task->setReopenDate($edittaskreopendate);
-                $task->save();
-                header("location:ViewTask.php?taskid=$tid");
-            }
-        }
-        else{
-            $task = new Tasks();
-            $task->setTaskID(0);	//new task
-            $task->setTaskName($taskname);
-            $task->setDescription($description);
-            $task->setAssigneeAccountID($taskassigneeaccountid);
-            $task->setReporterAccountID(SessionManager::getAccountID());
-            $task->setStatusTypeID(1);		//set to open as default
-            $task->setTaskTypeID($tasktype);
-            $task->setPriorityTypeID($taskprioritytypeid);
-            $task->setProjectID($taskprojectid);
-            //record dates
-            date_default_timezone_set('America/New_York');
-
-            // Then call the date functions
-            $date = date('Y-m-d H:i:s');
-            $task->setCreateDate($date);
-            $task->setCloseDate(NULL);
-            $task->setReopenDate(NULL);
-            $task->save();
-            //grab id after save
-            $tid = $task->getTaskID();
-            header("location:ViewTask.php?taskid=$tid");
-        }
-
-    }
-    else
-    {
-        header("location:CreateTask.php?msg=validate");
-    }
-}
-
 #endregion
 ?>
 <!DOCTYPE html>
@@ -352,19 +322,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <label for="txtDescription">Description</label>
                             <textarea id="inputDescription" name="txtDescription" class="form-control" rows="5"><?php if(isset($edittaskdescription)) echo $edittaskdescription ?></textarea>
                         </div>
-                        <input type="hidden" name="edittaskid" value="<?php echo $edittaskid ?>">
-                        <input type="hidden" name="edittaskreporteraccountid" value="<?php echo $edittaskreporteraccountid ?>">
-                        <input type="hidden" name="edittaskstatustypeid" value="<?php echo $edittaskstatustypeid ?>">
-                        <input type="hidden" name="edittaskcreatedate" value="<?php echo $edittaskcreatedate ?>">
-                        <input type="hidden" name="edittaskclosedate" value="<?php echo $edittaskclosedate ?>">
-                        <input type="hidden" name="edittaskreopendate" value="<?php echo $edittaskreopendate ?>">
+                        <input type="hidden" name="hfisEdit" id="inputisEdit">
+                        <input type="hidden" name="hftaskid" value="<?php echo $edittaskid ?>">
+                        <input type="hidden" name="hftaskreporteraccountid" value="<?php echo $edittaskreporteraccountid ?>">
+                        <input type="hidden" name="hftaskstatustypeid" value="<?php echo $edittaskstatustypeid ?>">
+                        <input type="hidden" name="hftaskcreatedate" value="<?php echo $edittaskcreatedate ?>">
+                        <input type="hidden" name="hftaskclosedate" value="<?php echo $edittaskclosedate ?>">
+                        <input type="hidden" name="hftaskreopendate" value="<?php echo $edittaskreopendate ?>">
                         <div class="row">
                             <div class="col-sm-2"></div>
                             <?php if(isset($edittaskid)) { ?>
                                 <div class="col-sm-8">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+                                            <button class="btn btn-primary btn-block" id="isEdit" onclick="return doSubmit(this.id);" type="submit">Save Changes</button>
                                         </div>
                                         <div class="col-sm-6">
                                             <a class="btn btn-secondary btn-block" href="ViewTask.php?taskid=<?php echo $edittaskid ?>">Cancel</a>
@@ -404,6 +375,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <?php include "modal.php"?>
 <?php include "scripts.php" ?>
 <script>
+
+    function doSubmit(el) {
+        switch (el) {
+            case "isEdit":
+                $("#inputisEdit").val("true");
+                return true;
+            default: return false;
+        }
+    }
+
+
     function doValidation() {
         var isValid = true;
         var taskName = $("#inputTaskName").val();

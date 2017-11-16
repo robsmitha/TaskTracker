@@ -12,6 +12,9 @@ include "DAL/tasks.php";
 if($_SERVER["REQUEST_METHOD"] == "GET")
     if(isset($_GET['msg']))
         $alertmsg = $_GET['msg'];
+
+
+$alertmsg = "This product is still under active development, but feel free to try the BETA version.";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         <div class="row">
             <div class="col-lg-8">
                 <?php //include "tasks.php"; ?>
+
             </div>
             <div class="col-lg-4">
                 <?php //include "projects.php" ?>

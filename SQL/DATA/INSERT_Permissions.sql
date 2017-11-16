@@ -1,4 +1,3 @@
---Table Management Permissions
 
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (1, 'Can Create/Edit Accounts', 'Can Create/Edit Accounts', NULL);
 

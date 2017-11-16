@@ -50,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         else {
             $currentDate = date('Y-m-d H:i:s');
-            $defaultRoleId = 1; // This corresponds to the Admin role
+            $defaultRoleId = 6; // Read Onlt role
 
             $account = Authentication::createAccount($name, $lastname, $email, $password,$bio, $defaultRoleId, $imgurl, $dateofbirth, $location, $currentDate);
             if ($account == null) {

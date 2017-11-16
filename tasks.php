@@ -30,7 +30,7 @@ else
                 {
                     $taskid = $task->getTaskID();
                     $taskname = $task->getTaskName();
-                    echo "<a href='ViewTask.php?taskid=$taskid' class='lead'>$taskname</a><br>";
+                    echo "<a href='ViewTask.php?taskid=$taskid' class='lead'>$taskname</a><hr>";
                     $lastupdated = $task->getCreateDate();
                 }
                 ?>
