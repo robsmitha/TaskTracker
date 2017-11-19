@@ -17,7 +17,7 @@ $session_roleid = SessionManager::getRoleID();
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="index.php">
-              <i class="icon-home m-auto"></i>
+              <i class="icon-graph m-auto"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>

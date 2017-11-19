@@ -6,17 +6,19 @@ $session_roleid = SessionManager::getRoleID();
     $numOfReadyForTestingTasks = 0;
     $numOfReopenedTasks = 0;
     $numOfClosedTasks = 0;
+    $numOfInProgressTasks = 0;
+    $numOfResolvedTasks = 0;
     foreach ($TaskList as $task){
         switch ($task->getStatusTypeID()){
             case 1:	//open
                 $numOfOpenTasks = $numOfOpenTasks + 1;
                 break;
-            /*case 2:	//in progress
-
+            case 2:	//in progress
+                $numOfInProgressTasks = $numOfInProgressTasks + 1;
                 break;
             case 3:	//resolved
-
-                break;*/
+                $numOfResolvedTasks = $numOfResolvedTasks + 1;
+                break;
             case 4:	//ready for testing
                 $numOfReadyForTestingTasks = $numOfReadyForTestingTasks + 1;
                 break;
@@ -100,28 +102,4 @@ $session_roleid = SessionManager::getRoleID();
           </div>
         </div>
       </div>
-<div id="statustypebarchart" style="height: 250px;"></div>
-<script>
-    Morris.Bar({
-        element: 'statustypebarchart',
-        data: [
-            { y: 'Open', a: <?php echo $numOfOpenTasks ?>},
-            { y: 'Ready For Testing', a:<?php echo $numOfReadyForTestingTasks ?>},
-            { y: 'Reopened', a: <?php echo $numOfReopenedTasks ?>},
-            { y: 'Closed', a: <?php echo $numOfClosedTasks ?> }
-        ],
-        xkey: 'y',
-        ykeys: ['a'],
-        labels: ['Series A'],
-        barColors: function (row, series, type) {
-            console.log("--> "+row.label, series, type);
-            if(row.label == "Open") return "#007bff";
-            else if(row.label == "Ready For Testing") return "#ffc107";
-            else if(row.label == "Reopened") return "#28a745";
-            else if(row.label == "Closed") return "#dc3545";
-        },
-        hoverCallback: function (index, options, content, row) {
-            return row.y + " Tasks";
-        }
-    });
-</script>
+
