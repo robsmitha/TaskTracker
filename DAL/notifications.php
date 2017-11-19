@@ -294,4 +294,25 @@ class Notifications {
             die("The query yielded zero results.No rows found.");
         }
     }
+    public static function loadbyaccountid($paramAccountID) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_notifications_LoadByAccountID(?)');
+        $stmt->bind_param('i', $paramAccountID);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if (!$result) die($conn->error);
+        if ($result->num_rows > 0) {
+            $arr = array();
+            while ($row = $result->fetch_assoc()) {
+                $notifications = new Notifications($row['NotificationID'],$row['NotificationTypeID'],$row['AccountID'],$row['CreateDate'],$row['SeenDate'],$row['Seen'],$row['TaskID'],$row['ProjectID'],$row['CommentID']);
+                $arr[] = $notifications;
+            }
+            return $arr;
+        }
+        else {
+            echo "No new notifications";
+        }
+    }
 }

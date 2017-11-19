@@ -8,6 +8,10 @@ if(SessionManager::getAccountID() == 0)
 include "DAL/accounts.php";
 include  "DAL/roles.php";
 include  "DAL/teams.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
 {

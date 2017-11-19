@@ -4,6 +4,10 @@ include_once("Utilities/SessionManager.php");
 include_once("Utilities/Authentication.php");
 include_once("Utilities/Mailer.php");
 include_once("DAL/accounts.php");
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 
 if(SessionManager::getAccountID() == 0)
 {
@@ -101,8 +105,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 }
                 else {
                     // Set session values for successful login
-                    SessionManager::setAccountID($account->getAccountID());
-                    SessionManager::setRoleID($account->getRoleID());
+                    //SessionManager::setAccountID($account->getAccountID());
+                    //SessionManager::setRoleID($account->getRoleID());
                     // Send registration email
                     Mailer::sendRegistrationEmail($account->getEmail());
                     // Redirect to New Acct
@@ -160,8 +164,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 <html lang="en">
 <?php include "head.php" ?>
 <?php include "navbar.php" ?>
-<body class="bg-light">
-<br><br>
+<body class="fixed-nav sticky-footer bg-dark">
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->

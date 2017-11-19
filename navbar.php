@@ -2,8 +2,6 @@
 
 $session_accountid = SessionManager::getAccountID();
 $session_roleid = SessionManager::getRoleID();
-include "DAL/rolestopermissions.php";
-
 
 ?>
 <!-- Navigation-->
@@ -19,13 +17,13 @@ include "DAL/rolestopermissions.php";
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="index.php">
-            <i class="fa fa-fw fa-dashboard"></i>
+              <i class="icon-home m-auto"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Update Account Information">
               <a class="nav-link" href="ViewAccount.php?accountid=<?php echo $session_accountid ?>">
-                  <i class="fa fa-fw fa-user-circle"></i>
+                  <i class="icon-user m-auto"></i>
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
@@ -51,7 +49,7 @@ include "DAL/rolestopermissions.php";
                 ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Task">
                           <a class="nav-link" href="CreateTask.php">
-                              <i class="fa fa-fw fa-plus-square-o"></i>
+                              <i class="icon-plus m-auto"></i>
                               <span class="nav-link-text">Create Task</span>
                           </a>
                       </li>
@@ -61,7 +59,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
                           <a class="nav-link" href="CreateProject.php">
-                              <i class="fa fa-fw fa-pencil-square-o"></i>
+                              <i class="icon-book-open m-auto"></i>
                               <span class="nav-link-text">Create Project</span>
                           </a>
                       </li>
@@ -71,7 +69,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Role">
                           <a class="nav-link" href="CreateRole.php">
-                              <i class="fa fa-fw fa-lock"></i>
+                              <i class="icon-organization m-auto"></i>
                               <span class="nav-link-text">Create Role</span>
                           </a>
                       </li>
@@ -84,7 +82,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Team">
                           <a class="nav-link" href="CreateTeam.php">
-                              <i class="fa fa-fw fa-users"></i>
+                              <i class="icon-people m-auto"></i>
                               <span class="nav-link-text">Create Team</span>
                           </a>
                       </li>
@@ -95,7 +93,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Account">
                           <a class="nav-link" href="CreateAccount.php">
-                              <i class="fa fa-fw fa-user-plus"></i>
+                              <i class="icon-user-follow m-auto"></i>
                               <span class="nav-link-text">Create Account</span>
                           </a>
                       </li>
@@ -105,7 +103,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Tasks">
                           <a class="nav-link" href="SearchTasks.php">
-                              <i class="fa fa-fw fa-search"></i>
+                              <i class="icon-magnifier m-auto"></i>
                               <span class="nav-link-text">Search Tasks</span>
                           </a>
                       </li>
@@ -115,7 +113,7 @@ include "DAL/rolestopermissions.php";
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Accounts">
                           <a class="nav-link" href="SearchAccounts.php">
-                              <i class="fa fa-fw fa-search"></i>
+                              <i class="icon-user-following m-auto"></i>
                               <span class="nav-link-text">Search Accounts</span>
                           </a>
                       </li>
@@ -141,49 +139,110 @@ include "DAL/rolestopermissions.php";
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
+            <?php
+            $MessagesList = Messages::loadbyrecipientaccountid($session_accountid);
+            $messageCount = 0;
+            if(!empty($MessagesList)) {
+                foreach ($MessagesList as $message) {
+                    $messageCount = $messageCount + 1;
+                }
+            }
+            ?>
           <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-envelope"></i>
             <span class="d-lg-none">Messages
-              <span class="badge badge-pill badge-primary">12 New</span>
+              <span class="badge badge-pill badge-primary"><?php echo $messageCount; ?> New</span>
             </span>
             <span class="indicator text-primary d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
+              <i class="fa fa-fw fa-circle"></i> <?php echo $messageCount; ?>
             </span>
           </a>
           <div class="dropdown-menu" aria-labelledby="messagesDropdown">
             <h6 class="dropdown-header">New Messages:</h6>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <strong>David Miller</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
-            </a>
+              <?php
+              if(!empty($MessagesList)){
+                  foreach($MessagesList as $message) {
+                        $senderaccount = new Accounts();
+                        $senderaccount->load($message->getSenderAccountID());
+                      ?>
+                      <a class="dropdown-item" href="ViewAccount.php?accountid=<?php echo $message->getSenderAccountID(); ?>&messageid=<?php echo $message->getMessageID(); ?>">
+                          <strong><?php echo $senderaccount->getFirstName(). " " .$senderaccount->getLastName(); ?></strong>
+                          <span class="small float-right text-muted"><?php echo $message->getSentDate(); ?></span>
+                          <div class="dropdown-message small"><?php echo $message->getDescription(); ?>
+                          </div>
+                      </a>
+                      <?php
+                  }
+              }
+              ?>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item small" href="#">View all messages</a>
           </div>
         </li>
+          <?php
+          $NotificationsList = Notifications::loadbyaccountid($session_accountid);
+          $notificationCount = 0;
+          if(!empty($NotificationsList)){
+              foreach($NotificationsList as $notification){
+
+                  $notificationCount = $notificationCount + 1;
+              }
+          }
+          ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-bell"></i>
             <span class="d-lg-none">Alerts
-              <span class="badge badge-pill badge-warning">6 New</span>
+              <span class="badge badge-pill badge-warning"><?php echo $notificationCount; ?> New</span>
             </span>
             <span class="indicator text-warning d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
+              <i class="fa fa-fw fa-circle"></i><?php echo $notificationCount; ?>
             </span>
           </a>
           <div class="dropdown-menu" aria-labelledby="alertsDropdown">
             <h6 class="dropdown-header">New Alerts:</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
+              <?php
+              $NotificationsList = Notifications::loadbyaccountid($session_accountid);
+              $notificationCount = 0;
+              if(!empty($NotificationsList)) {
+              foreach($NotificationsList as $notification){
+                  ?>
+                  <div class="dropdown-divider"></div>
+                      <a id="<?php echo $notification->getNotificationID() ?>" class="dropdown-item" href="ViewTask.php?taskid=<?php echo $notification->getTaskID() ?>&notificationid=<?php echo $notification->getNotificationID()?>">
+                          <?php
+                          $notificationtype = new Notificationtypes();
+                          $notificationtype->load($notification->getNotificationTypeID());
+                          switch ($notification->getNotificationTypeID()){
+                              case 1: //likes
+                                    $cssclass = "text-primary";
+                                  break;
+                              case 2:   //comments
+                                  $cssclass = "text-warning";
+                                  break;
+                              case 3:   //status update
+                                  $cssclass = "text-success";
+                                  break;
+                              default:
+                                  break;
+                          }
+                          ?>
+                          <span class="<?php echo $cssclass; ?>">
+                            <strong>
+                              <i class="fa fa-long-arrow-up fa-fw"></i><?php echo $notificationtype->getNotification(); ?></strong>
+                          </span>
+                          <span class="small float-right text-muted"><?php echo $notification->getCreateDate(); ?></span>
+                          <div class="dropdown-message small"><?php echo $notificationtype->getDescription(); ?></div>
+                      </a>
+                  <form class="notification-form" id="FORM_<?php echo $notification->getNotificationID() ?>">
+                    <input type="hidden" name="hfnotificationid" value="<?php echo $notification->getNotificationID() ?>">
+                  </form>
+              <?php
+                } //end foreach
+              }
+              ?>
+
+
             <a class="dropdown-item small" href="#">View all alerts</a>
           </div>
         </li>

@@ -22,6 +22,11 @@ else
 {
     header("location:index.php");
 }
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
+include_once("DAL/accounts.php");
 include "DAL/teams.php";
 $team = new Teams();
 $team->load($teamid);

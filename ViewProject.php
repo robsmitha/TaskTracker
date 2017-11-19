@@ -25,6 +25,10 @@ else
     header("location:index.php");
 }
 include "DAL/tasks.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 //Project
 include "DAL/projects.php";
 $project = new Projects();

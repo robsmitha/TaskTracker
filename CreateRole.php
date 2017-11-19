@@ -7,6 +7,11 @@ if(SessionManager::getAccountID() == 0)
     header("location: login.php");
 }
 include "DAL/roles.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
+include_once("DAL/accounts.php");
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
     if(isset($_GET['msg']))

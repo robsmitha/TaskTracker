@@ -8,6 +8,11 @@ if(SessionManager::getAccountID() == 0)
 
 include "DAL/projects.php";
 include "DAL/tasks.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
+include_once("DAL/accounts.php");
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
     if(isset($_GET['msg']))
@@ -38,7 +43,7 @@ $alertmsg = "This product is still under active development, but feel free to tr
       <?php include "cardcounters.php" ?>
         <div class="row">
             <div class="col-lg-8">
-                <?php //include "tasks.php"; ?>
+
 
             </div>
             <div class="col-lg-4">

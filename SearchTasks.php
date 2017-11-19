@@ -12,6 +12,17 @@ include "DAL/statustypes.php";
 include "DAL/tasks.php";
 include "DAL/tasktypes.php";
 include "DAL/projects.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
+
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    if(isset($_GET["statustypeid"]) && is_numeric($_GET["statustypeid"])
+    && isset($_GET["accountid"]) && is_numeric($_GET["accountid"])){
+        $TaskSearchList = Tasks::search("","","",$_GET["accountid"],"",$_GET["statustypeid"],"","","","","","");
+    }
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
 {

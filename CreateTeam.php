@@ -2,6 +2,11 @@
 #region validate session & query
 session_start();
 include_once("Utilities/SessionManager.php");
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
+include "DAL/accounts.php";
 if(SessionManager::getAccountID() == 0)
 {
     header("location: login.php");

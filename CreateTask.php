@@ -13,6 +13,10 @@ include "DAL/statustypes.php";
 include "DAL/tasks.php";
 include "DAL/tasktypes.php";
 include "DAL/projects.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -43,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 $task->load($tid);
                 if($tid == $task->getTaskID()){
                     $task->setTaskID($task->getTaskID());
-                    $task->setReporterAccountID($task->getTaskID());
+                    $task->setReporterAccountID($task->getReporterAccountID());
                     $task->setStatusTypeID($task->getStatusTypeID());
                     $task->setCreateDate($task->getCreateDate());
                     $task->setCloseDate($task->getCloseDate());

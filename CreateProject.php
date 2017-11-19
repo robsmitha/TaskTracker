@@ -10,6 +10,10 @@ if(SessionManager::getAccountID() == 0)
 include "DAL/projects.php";
 include "DAL/accounts.php";
 include "DAL/projectcategorytypes.php";
+include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {

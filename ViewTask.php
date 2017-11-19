@@ -10,21 +10,43 @@ include "DAL/projects.php";
 include "DAL/accounts.php";
 include "DAL/comments.php";
 include "DAL/notifications.php";
+include "DAL/notificationtypes.php";
+include "DAL/rolestopermissions.php";
+include "DAL/messages.php";
 if(SessionManager::getAccountID() == 0)
 {
     header("location: login.php");
 }
+$accountid = SessionManager::getAccountID();
 //Check Query
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
 	if(isset($_GET['taskid']) && is_numeric($_GET['taskid']))	//validate query string
 	{
 		$taskid = $_GET['taskid'];
+		//now check if notificationid was set and set notiifcation to seen if so
+        //this means they clicked from the alerts drop down in the nav bar
+		if(isset($_GET['notificationid']) && is_numeric($_GET['notificationid'])){
+            $notification = new Notifications();
+            $notification->load($_GET["notificationid"]);
+            $notification->setSeen(1);
+            $date = date('Y-m-d H:i:s');
+            $notification->setSeenDate($date);
+            $notification->save();
+        }
 	}
 	else
 	{
 		header("location:index.php");
 	}
+	if(isset($_GET["cmd"]) && $_GET["cmd"] == "editcomment"){
+	    if(isset($_GET["commentid"]) && is_numeric($_GET["commentid"])){
+	        $editcomment = new Comments();
+	        $editcomment->load($_GET["commentid"]);
+	        $editcommentdesc = $editcomment->getDescription();
+	        $editcommentid = $editcomment->getCommentID();
+        }
+    }
 	//we good, load task for this task id
     $task = new Tasks();
     $task->load($taskid);
@@ -59,11 +81,11 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 
 
 
-if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
+if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     if(isset($_POST["LikeComment"])) {
         $notification = new Notifications();
-        $notification->setNotificationTypeID(2);    //Like
+        $notification->setNotificationTypeID(1);    //Like
         $notification->setAccountID($_POST["hfcommentaccountid"]);
         date_default_timezone_set('America/New_York');
         $date = date('Y-m-d H:i:s');
@@ -71,7 +93,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
         $notification->setSeenDate(null);
         $notification->setSeen(0);
         $notification->setTaskID($_POST["hfcommenttaskid"]);
-        $notification->setProjectID($_POST["hfcommentprojectid"]);
+        $notification->setProjectID($_POST["hfprojectid"]);
         $notification->setCommentID($_POST["hfcommentid"]);
         $notification->save();
         $id = $notification->getTaskID();
@@ -92,6 +114,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
             $comment->setCreateDate($date);
             $comment->setEditDate(null);
             $comment->save();
+            //now make notification for new comment
+            $notification = new Notifications();
+            $notification->setNotificationTypeID(2);    //comment
+            $notification->setAccountID($_POST["hfaccountid"]);
+            $notification->setCreateDate($date);
+            $notification->setSeenDate(null);
+            $notification->setSeen(0);
+            $notification->setTaskID($_POST["hftaskid"]);
+            $notification->setProjectID($_POST["hfcommentprojectid"]);
+            $notification->setCommentID($comment->getTaskID());
+            $notification->save();
+
             $id = $comment->getTaskID();
             header("location:ViewTask.php?taskid=$id");
         }
@@ -99,18 +133,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
             $validationMsg = "Please Enter a Comment!";
         }
     }
-    if(!isset($_POST["PostComment"]) && !isset($_POST["LikeComment"])){   //this post back was to update status types
-        if(isset($_POST['statustypeid']))
+    if(isset($_POST["DeleteComment"])){
+        $commentid = $_POST["hfcommentid"];
+        $comment = new Comments();
+        $comment->load($commentid);
+        $comment->setCommentID($comment->getCommentID());
+        $comment->setDescription($comment->getDescription());
+        $comment->setAccountID($comment->getAccountID());
+        $comment->setTaskID($comment->getTaskID());
+        $comment->setCommentStatusTypeID(2);
+        $comment->setCreateDate($comment->getCreateDate());
+        date_default_timezone_set('America/New_York');
+        $date = date('Y-m-d H:i:s');
+        $comment->setEditDate($date);
+        $comment->save();
+        $id = $comment->getTaskID();
+        header("location:ViewTask.php?taskid=$id");
+    }
+    if(isset($_POST["EditComment"])){
+        $returnVal = true;
+        $_POST["commentArea"] == "" ? $returnVal = false : $commentArea = $_POST["commentArea"];
+        $_POST["hfcommentid"] == "" ? $returnVal = false : $commentid = $_POST["hfcommentid"];
+        if($returnVal){
+            $comment = new Comments();
+            $comment->load($commentid);
+            $comment->setCommentID($comment->getCommentID());
+            $comment->setDescription($commentArea);
+            $comment->setAccountID($comment->getAccountID());
+            $comment->setTaskID($comment->getTaskID());
+            $comment->setCommentStatusTypeID(3);
+            $comment->setCreateDate($comment->getCreateDate());
+            date_default_timezone_set('America/New_York');
+            $date = date('Y-m-d H:i:s');
+            $comment->setEditDate($date);
+            $comment->save();
+            $id = $comment->getTaskID();
+            header("location:ViewTask.php?taskid=$id");
+        }
+    }
+    if(!isset($_POST["PostComment"]) && !isset($_POST["LikeComment"]) && !isset($_POST["EditComment"]) && !isset($_POST["DeleteComment"])){   //this post back was to update status types
+        if(isset($_POST['hfstatustypeid']))
         {
-            $statustypeid = $_POST['statustypeid'];
+            $statustypeid = $_POST['hfstatustypeid'];
         }
         else
         {
             header("location:.index.php");
         }
-        if(isset($_POST['taskid']))
+        if(isset($_POST['hftaskid']))
         {
-            $taskid = $_POST['taskid'];
+            $taskid = $_POST['hftaskid'];
         }
         else
         {
@@ -119,20 +191,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
         $task = new Tasks();
         $task->load($taskid);	//load this task to change status type
         $task->setStatusTypeID($statustypeid);//record dates
+        date_default_timezone_set('America/New_York');
+        $date = date('Y-m-d H:i:s');
         if($statustypeid == 6) //closed
         {
-            date_default_timezone_set('America/New_York');
-            $date = date('Y-m-d H:i:s');
             $task->setCloseDate($date);
         }
         if($statustypeid == 5)
         {
-            date_default_timezone_set('America/New_York');
-            $date = date('Y-m-d H:i:s');
             $task->setReopenDate($date);
         }
 
         $task->save();
+
+        $notification = new Notifications();
+        $notification->setNotificationTypeID(3);    //Update
+        $notification->setAccountID($_POST["hfaccountid"]);
+        $notification->setCreateDate($date);
+        $notification->setSeenDate(null);
+        $notification->setSeen(0);
+        $notification->setTaskID($_POST["hftaskid"]);
+        $notification->setProjectID($_POST["hfprojectid"]);
+        $notification->setCommentID(null);
+        $notification->save();
+
+
         $id = $task->getTaskID();
         header("location:ViewTask.php?taskid=$id");
     }
@@ -209,8 +292,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
                             }
                         </script>
 						<form method="post" class="btn-group pull-right">
-                            <input id="hfstatustypeid" type="hidden" name="statustypeid">
-                            <input type="hidden" name="taskid" value="<?php echo $taskid ?>">
+                            <input id="hfstatustypeid" type="hidden" name="hfstatustypeid">
+                            <input type="hidden" name="hftaskid" value="<?php echo $taskid; ?>">
+                            <input type="hidden" name="hfaccountid" value="<?php echo $task->getAssigneeAccountID() ?>">
+                            <input type="hidden" name="hfprojectid" value="<?php echo $task->getProjectID(); ?>">
                             <a class="btn btn-secondary" href="CreateTask.php?cmd=edit&taskid=<?php echo $taskid ?>">Edit</a>
 							<?php
                             if(true)    //$task->getAssigneeAccountID() == $_SESSION["AccountID"]
@@ -296,13 +381,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
                 <div class="card-footer">
                     <!--comments-->
                     <div class="row">
-                        <div class="comments col-md-9" id="comments">
+                        <div class="comments col-md-12" id="comments">
 
                             <?php
                             $commentsList = Comments::loadbytaskid($task->getTaskID());
                             if(!empty($commentsList)){
-
-
                                 foreach($commentsList as $comment){
                                 $account = new Accounts();
                                 $account->load($comment->getAccountID());
@@ -320,7 +403,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
                                             <input type="hidden" name="hfcommentaccountid" value="<?php echo $comment->getAccountID(); ?>">
                                             <input type="hidden" name="hfcommentprojectid" value="<?php echo $project->getProjectId(); ?>">
                                             <input type="submit" name="LikeComment" value="Like" class="btn btn-link small">
+                                    <?php
+                                    if($comment->getAccountID() == SessionManager::getAccountID()) {
+                                        ?>
+                                        <input type="submit" name="DeleteComment" value="Delete" class="btn btn-link small">
+                                        <?php
+                                    }
+                                        ?>
                                         </form>
+                                        <?php
+                                            if($comment->getAccountID() == SessionManager::getAccountID())
+                                            {
+                                                ?>
+                                                <a class="btn btn-link pull-right" href="ViewTask.php?taskid=<?php echo $comment->getTaskID() ?>&cmd=editcomment&commentid=<?php echo $comment->getCommentID() ?>">Edit</a>
+                                                <?php
+                                            }
+                                        ?>
                                         <h6 class="small comment-meta">
                                             <a href="ViewAccount.php?accountid=<?php echo $account->getAccountID(); ?>"><?php echo $account->getFirstName(). " " .$account->getLastName(); ?></a>
                                             <?php echo $comment->getCreateDate(); ?>
@@ -347,13 +445,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")	//gather task id from query
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <textarea id="inputDescription" type="text" class="form-control" rows="4" name="commentArea" placeholder="Leave a comment"></textarea>
-                                            <input type="submit" name="PostComment" value="Post" class="input-group-addon btn btn-primary">
+                                            <textarea id="inputDescription" type="text" class="form-control" rows="4" name="commentArea" placeholder="Leave a comment"><?php if(isset($editcommentdesc)) echo $editcommentdesc; ?></textarea>
+                                            <button type="submit" name="<?php if(isset($editcommentdesc)) echo "EditComment"; else echo "PostComment"; ?>" class="input-group-addon btn btn-primary"><i class="fa fa-comment"></i>Comment</button>
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="hfcommentid" value="<?php if(isset($editcommentid)) echo $editcommentid; else echo 0; ?>">
                                 <input type="hidden" name="hftaskid" value="<?php echo $task->getTaskID(); ?>">
-                                <input type="hidden" name="hfaccountid" value="<?php echo $assignee->getAccountID(); ?>">
+                                <input type="hidden" name="hfaccountid" value="<?php echo $accountid ?>">
+                                <input type="hidden" name="hfprojectid" value="<?php echo $task->getProjectID(); ?>">
                             </form>
 
                         </div>
