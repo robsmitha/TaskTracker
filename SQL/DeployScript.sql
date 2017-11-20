@@ -2692,6 +2692,8 @@ INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `Cre
 
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (18, 'Can Update Status', 'Can Update Status', NULL);
 
+INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (19, 'Can Search Projects', 'Can Search Projects', NULL);
+
 
 use tasktracker;
 INSERT INTO `prioritytypes` (`PriorityTypeID`, `PriorityType`, `Description`) VALUES (1, 'Low', 'The task is open');
@@ -2819,6 +2821,28 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (44, 6, 16);
 
 
+-- add new permissions
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (45, 1, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (46, 2, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (47, 3, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (48, 4, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (49, 5, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (50, 6, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (51, 1, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (52, 2, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (53, 3, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (54, 4, 18);
+
+
 use tasktracker;
 INSERT INTO `statustypes` (`StatusTypeID`, `Status`, `Description`) VALUES (1, 'Open', 'The task is open');
 
@@ -2854,3 +2878,6 @@ VALUES (1, 'Example Project', 'Example project created by default', NULL, NULL, 
 use tasktracker;
 INSERT INTO `tasks` (`TaskID`, `TaskName`, `Description`, `AssigneeAccountID`, `ReporterAccountID`, `StatusTypeID`, `TaskTypeID`, `PriorityTypeID`, `ProjectID`, `CreateDate`, `CloseDate`, `ReopenDate`)
 VALUES (1, 'Example Task', 'Example task inserted by default', 1, 1, 1, 1, 1, 1, NOW(), NULL, NULL);
+
+use tasktracker;
+INSERT INTO `comments` (`CommentID`, `Description`, `AccountID`, `TaskID`, `CommentStatusTypeID`, `CreateDate`, `EditDate`) VALUES ('1', 'Example Comment', '1', '1', '1', '2017-11-20 00:00:00', NULL);
