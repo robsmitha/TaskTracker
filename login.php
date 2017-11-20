@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 include_once("Utilities/Authentication.php");
 
 $errorMessage = "";
@@ -21,7 +20,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $validationMsg = "Incorrect username or password. Try again.";
     }
 }
-
 ?>
 
 <!DOCTYPE html>

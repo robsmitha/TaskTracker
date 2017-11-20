@@ -1,3 +1,4 @@
+use tasktracker;
 -- Administrator (RoleID: 1)
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (1, 1, 1);
 
@@ -91,3 +92,25 @@ INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (43, 6, 17);
 
 INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (44, 6, 16);
+
+-- add new permissions
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (45, 1, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (46, 2, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (47, 3, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (48, 4, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (49, 5, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (50, 6, 19);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (51, 1, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (52, 2, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (53, 3, 18);
+
+INSERT INTO `rolestopermissions` (`RoleToPermissionID`, `RoleID`, `PermissionID`) VALUES (54, 4, 18);
+

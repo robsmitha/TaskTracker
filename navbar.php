@@ -99,6 +99,16 @@ $session_roleid = SessionManager::getRoleID();
                       </li>
                       <?php
                   }
+                  if($permission->getPermissionID() == 19){  //Can Search Projects
+                      ?>
+                      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
+                          <a class="nav-link" href="SearchProjects.php">
+                              <i class="icon-folder m-auto"></i>
+                              <span class="nav-link-text">Search Projects</span>
+                          </a>
+                      </li>
+                      <?php
+                  }
                   if($permission->getPermissionID() == 17){  //Can Search tasks
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search Tasks">
@@ -154,7 +164,7 @@ $session_roleid = SessionManager::getRoleID();
               <span class="badge badge-pill badge-primary"><?php echo $messageCount; ?> New</span>
             </span>
             <span class="indicator text-primary d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i> <?php echo $messageCount; ?>
+              <i class="fa fa-fw fa-circle"></i><?php echo $messageCount; ?>
             </span>
           </a>
           <div class="dropdown-menu" aria-labelledby="messagesDropdown">
@@ -256,6 +266,7 @@ $session_roleid = SessionManager::getRoleID();
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item" id="aTasks" onclick='setFormAction(this);'>Tasks</a>
                         <a href="#" class="dropdown-item" id="aAccounts" onclick='setFormAction(this);'>Accounts</a>
+                        <a href="#" class="dropdown-item" id="aProjects" onclick='setFormAction(this);'>Project</a>
                     </div>
                 </div>
               <input class="form-control" name="searchBox" type="text" placeholder="Search for...">
@@ -292,6 +303,12 @@ $session_roleid = SessionManager::getRoleID();
                 $("#lblSearchTable").text("Accounts");
                 $("#aAccounts").addClass('active');
                 break;
+            case "aProjects":
+                clearAll();
+                $("#NavSearchBar").attr("action", "SearchProjects.php");
+                $("#lblSearchTable").text("Projects");
+                $("#aProjects").addClass('active');
+                break;
         }
     }
     function clearAll()
@@ -300,5 +317,6 @@ $session_roleid = SessionManager::getRoleID();
         $("#lblSearchTable").text("");
         $("#aTasks").removeClass('active');
         $("#aAccounts").removeClass('active');
+        $("#aProjects").removeClass('active');
     }
 </script>

@@ -1,12 +1,9 @@
 use tasktracker;
+DROP PROCEDURE `tasktracker`.`usp_comments_LoadAll`;
 
-DROP PROCEDURE `tasktracker`.`usp_comments_LoadByTaskID`;
 
 DELIMITER //
-CREATE PROCEDURE `tasktracker`.`usp_comments_LoadByTaskID`
-(
-	 IN paramTaskID INT
-)
+CREATE PROCEDURE `tasktracker`.`usp_comments_LoadAll`()
 BEGIN
 	SELECT
 		`comments`.`CommentID` AS `CommentID`,
@@ -17,8 +14,6 @@ BEGIN
 		`comments`.`CreateDate` AS `CreateDate`,
 		`comments`.`EditDate` AS `EditDate`
 	FROM `comments`
-	WHERE 		`comments`.`TaskID` = paramTaskID
-	AND `comments`.`CommentStatusTypeID` != 2 -- not deleted
 	ORDER BY `comments`.`CreateDate` DESC;
 END //
 DELIMITER ;

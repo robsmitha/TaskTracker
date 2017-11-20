@@ -1,3 +1,4 @@
+use tasktracker;
 INSERT INTO `statustypes` (`StatusTypeID`, `Status`, `Description`) VALUES (1, 'Open', 'The task is open');
 
 INSERT INTO `statustypes` (`StatusTypeID`, `Status`, `Description`) VALUES (2, 'In Progress', 'The task has been marked in progress.');

@@ -104,7 +104,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $_POST["commentArea"] == "" ? $returnVal = false : $commentArea = $_POST["commentArea"];
         if($returnVal){
             $comment = new Comments();
-            $comment->setCommentID(0);
+            //$comment->setCommentID(0);
             $comment->setDescription($commentArea);
             $comment->setAccountID($_POST["hfaccountid"]);
             $comment->setTaskID($_POST["hftaskid"]);
@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $notification->setSeenDate(null);
             $notification->setSeen(0);
             $notification->setTaskID($_POST["hftaskid"]);
-            $notification->setProjectID($_POST["hfcommentprojectid"]);
+            $notification->setProjectID($_POST["hfprojectid"]);
             $notification->setCommentID($comment->getTaskID());
             $notification->save();
 
@@ -401,7 +401,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                             <input type="hidden" name="hfcommentid" value="<?php echo $comment->getCommentID(); ?>">
                                             <input type="hidden" name="hfcommenttaskid" value="<?php echo $comment->getTaskID(); ?>">
                                             <input type="hidden" name="hfcommentaccountid" value="<?php echo $comment->getAccountID(); ?>">
-                                            <input type="hidden" name="hfcommentprojectid" value="<?php echo $project->getProjectId(); ?>">
+                                            <input type="hidden" name="hfcommentprojectid" value="<?php echo $project->getProjectID(); ?>">
                                             <input type="submit" name="LikeComment" value="Like" class="btn btn-link small">
                                     <?php
                                     if($comment->getAccountID() == SessionManager::getAccountID()) {

@@ -108,7 +108,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $project->setProjectLeadAccountID($leadaccountid);
             $project->setProjectCategoryID($projectcategorytypeid);
             $project->save();
-            header("location:index.php?msg=Created Project: $projectname!");
+            $pid = $project->getProjectID();
+            header("location:ViewProject.php?projectid=$pid");
         }
     }
     else
@@ -137,7 +138,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
       </ol>
 
       <div class="row">
-	  
+
         <div class="col-lg-8">
             <?php if(isset($alertmsg)) { ?>
                 <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -181,7 +182,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 {
                                     $p = new Projectcategorytypes();
                                     $p->load($editprojectcategoryid);
-                                    $projectCategoryName = $p->getProjectCategory();
+                                    $projectCategoryName = $p->getProjectCategoryType();
                                     echo "<option value='$editprojectcategoryid'>";
                                     echo $projectCategoryName;
                                     echo '</option>';
@@ -194,13 +195,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 $ProjectCategoryList = Projectcategorytypes::loadall();
                                 foreach($ProjectCategoryList as $projectCategory)
                                 {
-                                    if(isset($editprojectcategoryid) && $projectCategory->getProjectCategoryID() == $editprojectcategoryid)
+                                    if(isset($editprojectcategoryid) && $projectCategory->getProjectCategoryTypeID() == $editprojectcategoryid)
                                     {
                                         //skip
                                     }
                                     else{
-                                        $pid = $projectCategory->getProjectCategoryID();
-                                        $pcname = $projectCategory->getProjectCategory();
+                                        $pid = $projectCategory->getProjectCategoryTypeID();
+                                        $pcname = $projectCategory->getProjectCategoryType();
                                         echo "<option value='$pid'>";
                                         echo $pcname;
                                         echo '</option>';

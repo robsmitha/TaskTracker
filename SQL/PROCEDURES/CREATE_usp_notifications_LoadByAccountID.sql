@@ -1,5 +1,6 @@
+use tasktracker;
 DELIMITER //
-CREATE PROCEDURE `smithadb`.`usp_notifications_LoadByAccountID`
+CREATE PROCEDURE `tasktracker`.`usp_notifications_LoadByAccountID`
 (
 	 IN paramAccountID INT
 )

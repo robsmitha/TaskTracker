@@ -1,7 +1,4 @@
 use tasktracker;
-
-DROP PROCEDURE `tasktracker`.`usp_comments_LoadByTaskID`;
-
 DELIMITER //
 CREATE PROCEDURE `tasktracker`.`usp_comments_LoadByTaskID`
 (
@@ -17,8 +14,6 @@ BEGIN
 		`comments`.`CreateDate` AS `CreateDate`,
 		`comments`.`EditDate` AS `EditDate`
 	FROM `comments`
-	WHERE 		`comments`.`TaskID` = paramTaskID
-	AND `comments`.`CommentStatusTypeID` != 2 -- not deleted
-	ORDER BY `comments`.`CreateDate` DESC;
+	WHERE 		`comments`.`TaskID` = paramTaskID;
 END //
 DELIMITER ;

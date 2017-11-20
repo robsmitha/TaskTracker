@@ -1,3 +1,4 @@
+use tasktracker;
 INSERT INTO `tasktypes` (`TaskTypeID`, `TaskType`, `Description`) VALUES (1, 'Bug', 'Bug');
 
 INSERT INTO `tasktypes` (`TaskTypeID`, `TaskType`, `Description`) VALUES (2, 'Improvement', 'Improvement');

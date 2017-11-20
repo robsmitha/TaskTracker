@@ -11,7 +11,7 @@ Description:	Creates the DAL class for  permissions table and respective stored 
 class Permissions {
 
 	// This is for local purposes only! In hosted environments the db_settings.php file should be outside of the webroot, such as: include("/outside-webroot/db_settings.php");
-	protected static function getDbSettings() { return "DAL/db_localsettings.php"; }
+	protected static function getDbSettings() { return "/var/www/db_localsettings.php"; }
 
 	/******************************************************************/
 	// Properties

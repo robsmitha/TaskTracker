@@ -65,8 +65,8 @@ $alertmsg = "This product is still under active development, but feel free to tr
                 <!-- Card Columns Example Social Feed-->
                 <style>
                     .card-img-top {
-                        width: min-content;
-                        height: auto;
+                        width: auto;
+                        height: 75px;
                     }
                 </style>
                 <div class="mb-0 mt-4">
@@ -93,7 +93,7 @@ $alertmsg = "This product is still under active development, but feel free to tr
                             ?>
                             <!-- Example Social Card-->
                             <div class="card mb-3">
-                                <a href="ViewTask.php?taskid=<?php echo $task->getTaskID(); ?>">
+                                <a href="ViewTask.php?taskid=<?php echo $task->getTaskID(); ?>" alt="<?php echo $project->getProjectName(); ?>">
                                     <img class="rounded mx-auto d-block card-img-top img-fluid" src="<?php echo $project->getImgURL(); ?>" alt="<?php echo $project->getProjectName(); ?>">
                                 </a>
                                 <div class="card-body">
@@ -148,8 +148,61 @@ $alertmsg = "This product is still under active development, but feel free to tr
 
             </div>
             <div class="col-lg-4">
-                <br>
-                <br>
+               <!-- <div class="mb-0 mt-4">
+                    <i class="fa fa-line-chart"></i> Notification Statistics
+                </div>
+                <hr class="mt-2">
+                <div id="area-example" style="height: 250px;"></div>
+                <script>
+                    Morris.Area({
+                        element: 'area-example',
+                        data: [
+                            { y: '2006', a: 100, b: 90 },
+                            { y: '2007', a: 75,  b: 65 },
+                            { y: '2008', a: 50,  b: 40 },
+                            { y: '2009', a: 75,  b: 65 },
+                            { y: '2010', a: 50,  b: 40 },
+                            { y: '2011', a: 75,  b: 65 },
+                            { y: '2012', a: 100, b: 90 }
+                        ],
+                        xkey: 'y',
+                        ykeys: ['a', 'b'],
+                        labels: ['Series A', 'Series B']
+                    });
+                </script>-->
+
+                <div class="mb-0 mt-4">
+                    <i class="fa fa-line-chart"></i> Notification Statistics
+                </div>
+                <hr class="mt-2">
+                <div id="line-example" style="height: 250px;"></div>
+                <script>
+
+                    Morris.Line({
+                        element: 'line-example',
+                        data: [
+                            <?php
+
+                            $nl = Notifications::loadall();
+                            $nid = 0;
+                            foreach ($nl as $n){
+                                $nid = $n->getNotificationID();
+                                $createdate = $n->getCreateDate();
+                            ?>
+                            { y: '<?php echo $createdate; ?>', a: <?php echo $nid; ?> },
+                            <?php
+                            }
+                            ?>
+                        ],
+                        xkey: 'y',
+                        ykeys: ['a'],
+                        labels: ['Series A']
+                    });
+                </script>
+                <div class="mb-0 mt-4">
+                    <i class="fa fa-pie-chart"></i> Task Status Type Statistics
+                </div>
+                <hr class="mt-2">
                 <div id="statustypebarchart" style="height: 250px;"></div>
                 <script>
                     Morris.Bar({

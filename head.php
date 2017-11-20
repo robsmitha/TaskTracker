@@ -22,6 +22,7 @@
         .dropdown-menu {
             min-width: 275px;
         }
+
     </style>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>

@@ -273,7 +273,7 @@ class Messages {
             return $arr;
         }
         else {
-            echo "No new messages";
+            //echo "No new messages";
         }
     }
 }

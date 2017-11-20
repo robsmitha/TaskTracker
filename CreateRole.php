@@ -74,7 +74,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $role->setRole($rolename);
             $role->setDescription($description);
             $role->save();
-            header("location:index.php?msg=Created Role: $rolename!");
+            $rid = $role->getRoleID();
+            header("location:ViewRole.php?roleid=$rid");
         }
     }
     else

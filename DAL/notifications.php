@@ -312,7 +312,7 @@ class Notifications {
             return $arr;
         }
         else {
-            echo "No new notifications";
+            //echo "No new notifications";
         }
     }
 }

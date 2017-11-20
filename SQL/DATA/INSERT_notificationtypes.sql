@@ -1,4 +1,4 @@
-use smithadb;
+use tasktracker;
 INSERT INTO `notificationtypes` (`NotificationTypeID`, `Notification`, `Description`) VALUES (1, 'Like', 'New like on your comment.');
 
 INSERT INTO `notificationtypes` (`NotificationTypeID`, `Notification`, `Description`) VALUES (2, 'Comment', 'New comment on one of your tasks.');

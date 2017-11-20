@@ -1,4 +1,4 @@
-
+use tasktracker;
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (1, 'Can Create/Edit Accounts', 'Can Create/Edit Accounts', NULL);
 
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (2, 'Can Create/Edit Comments', 'Can Create/Edit Comments', NULL);
@@ -36,3 +36,5 @@ INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `Cre
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (17, 'Can Search Tasks', 'Can Search Tasks', NULL);
 
 INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (18, 'Can Update Status', 'Can Update Status', NULL);
+
+INSERT INTO `permissions` (`PermissionID`, `PermissionName`, `Description`, `CreateDate`) VALUES (19, 'Can Search Projects', 'Can Search Projects', NULL);

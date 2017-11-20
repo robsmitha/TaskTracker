@@ -41,7 +41,7 @@ $session_roleid = SessionManager::getRoleID();
           <div class="card text-white bg-primary o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
-                <i class="fa fa-fw fa-circle-o"></i>
+                <i class="icon-speedometer"></i>
               </div>
               <div class="mr-5"><?php echo $numOfOpenTasks ?> Open Tasks!</div>
             </div>
@@ -57,7 +57,7 @@ $session_roleid = SessionManager::getRoleID();
           <div class="card text-white bg-warning o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
-                <i class="fa fa-fw fa-check-circle-o"></i>
+                <i class="icon-graph"></i>
               </div>
               <div class="mr-5"><?php echo $numOfReadyForTestingTasks ?> Tasks Ready For Testing!</div>
             </div>
@@ -73,7 +73,7 @@ $session_roleid = SessionManager::getRoleID();
           <div class="card text-white bg-success o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
-                <i class="fa fa-fw fa-repeat"></i>
+                <i class="icon-reload"></i>
               </div>
               <div class="mr-5"><?php echo $numOfReopenedTasks ?> Reopened Tasks!</div>
             </div>
@@ -89,7 +89,7 @@ $session_roleid = SessionManager::getRoleID();
           <div class="card text-white bg-danger o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
-                <i class="fa fa-fw fa-times"></i>
+                <i class="icon-layers"></i>
               </div>
               <div class="mr-5"><?php echo $numOfClosedTasks ?> Closed Tasks!</div>
             </div>

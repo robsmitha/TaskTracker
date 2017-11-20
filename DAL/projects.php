@@ -17,7 +17,7 @@ class Projects {
 	// Properties
 	/******************************************************************/
 
-	protected $ProjectId;
+	protected $ProjectID;
 	protected $ProjectName;
 	protected $ProjectDescription;
 	protected $ImgURL;
@@ -45,7 +45,7 @@ class Projects {
 
 
 	public function __constructBase() {
-		$this->ProjectId = 0;
+		$this->ProjectID = 0;
 		$this->ProjectName = "";
 		$this->ProjectDescription = "";
 		$this->ImgURL = "";
@@ -60,8 +60,8 @@ class Projects {
 	}
 
 
-	public function __constructFull($paramProjectId,$paramProjectName,$paramProjectDescription,$paramImgURL,$paramProjectURL,$paramProjectLeadAccountID,$paramProjectCategoryID) {
-		$this->ProjectId = $paramProjectId;
+	public function __constructFull($paramProjectID,$paramProjectName,$paramProjectDescription,$paramImgURL,$paramProjectURL,$paramProjectLeadAccountID,$paramProjectCategoryID) {
+		$this->ProjectID = $paramProjectID;
 		$this->ProjectName = $paramProjectName;
 		$this->ProjectDescription = $paramProjectDescription;
 		$this->ImgURL = $paramImgURL;
@@ -75,11 +75,11 @@ class Projects {
 	// Accessors / Mutators
 	/******************************************************************/
 
-	public function getProjectId(){
-		return $this->ProjectId;
+	public function getProjectID(){
+		return $this->ProjectID;
 	}
-	public function setProjectId($value){
-		$this->ProjectId = $value;
+	public function setProjectID($value){
+		$this->ProjectID = $value;
 	}
 	public function getProjectName(){
 		return $this->ProjectName;
@@ -135,7 +135,7 @@ class Projects {
 		if (!$result) die($conn->error);
 
 		while ($row = $result->fetch_assoc()) {
-		 $this->setProjectId($row['ProjectId']);
+		 $this->setProjectID($row['ProjectID']);
 		 $this->setProjectName($row['ProjectName']);
 		 $this->setProjectDescription($row['ProjectDescription']);
 		 $this->setImgURL($row['ImgURL']);
@@ -147,7 +147,7 @@ class Projects {
 
 
 	public function save() {
-		if ($this->getProjectId() == 0)
+		if ($this->getProjectID() == 0)
 			$this->insert();
 		else
 			$this->update();
@@ -185,7 +185,7 @@ class Projects {
 		include(self::getDbSettings());
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		$stmt = $conn->prepare('CALL usp_projects_Update(?,?,?,?,?,?,?)');
-		$arg1 = $this->getProjectId();
+		$arg1 = $this->getProjectID();
 		$arg2 = $this->getProjectName();
 		$arg3 = $this->getProjectDescription();
 		$arg4 = $this->getImgURL();
@@ -220,7 +220,7 @@ class Projects {
 		if ($result->num_rows > 0) {
 			$arr = array();
 			while ($row = $result->fetch_assoc()) {
-				$projects = new Projects($row['ProjectId'],$row['ProjectName'],$row['ProjectDescription'],$row['ImgURL'],$row['ProjectURL'],$row['ProjectLeadAccountID'],$row['ProjectCategoryID']);
+				$projects = new Projects($row['ProjectID'],$row['ProjectName'],$row['ProjectDescription'],$row['ImgURL'],$row['ProjectURL'],$row['ProjectLeadAccountID'],$row['ProjectCategoryID']);
 				$arr[] = $projects;
 			}
 			return $arr;
@@ -240,11 +240,11 @@ class Projects {
 	}
 
 
-	public static function search($paramProjectId,$paramProjectName,$paramProjectDescription,$paramImgURL,$paramProjectURL,$paramProjectLeadAccountID,$paramProjectCategoryID) {
+	public static function search($paramProjectID,$paramProjectName,$paramProjectDescription,$paramImgURL,$paramProjectURL,$paramProjectLeadAccountID,$paramProjectCategoryID) {
 		include(self::getDbSettings());
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		$stmt = $conn->prepare('CALL usp_projects_Search(?,?,?,?,?,?,?)');
-		$arg1 = Projects::setNullValue($paramProjectId);
+		$arg1 = Projects::setNullValue($paramProjectID);
 		$arg2 = Projects::setNullValue($paramProjectName);
 		$arg3 = Projects::setNullValue($paramProjectDescription);
 		$arg4 = Projects::setNullValue($paramImgURL);
@@ -259,7 +259,7 @@ class Projects {
 		if ($result->num_rows > 0) {
 			$arr = array();
 			while ($row = $result->fetch_assoc()) {
-				$projects = new Projects($row['ProjectId'],$row['ProjectName'],$row['ProjectDescription'],$row['ImgURL'],$row['ProjectURL'],$row['ProjectLeadAccountID'],$row['ProjectCategoryID']);
+				$projects = new Projects($row['ProjectID'],$row['ProjectName'],$row['ProjectDescription'],$row['ImgURL'],$row['ProjectURL'],$row['ProjectLeadAccountID'],$row['ProjectCategoryID']);
 				$arr[] = $projects;
 			}
 			return $arr;

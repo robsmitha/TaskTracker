@@ -134,8 +134,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                 <tr>
                     <th scope="col">Task ID</th>
                     <th scope="col">Task</th>
-                    <th scope="col">Assignee ID</th>
-                    <th scope="col">Reporter ID</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">Reporter</th>
                     <th scope="col">Project ID</th>
                     <th scope="col">Status ID</th>
                     <th scope="col">Priority ID</th>
@@ -154,22 +154,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                             <a href="ViewTask.php?taskid=<?php echo $task->getTaskID() ?>" class="btn btn-link"><?php echo $task->getTaskName() ?></a>
                         </td>
                         <td>
-                            <a href="ViewAccount.php?accountid=<?php echo $task->getAssigneeAccountID() ?>" class="btn btn-link"><?php echo $task->getAssigneeAccountID() ?></a>
+                            <a href="ViewAccount.php?accountid=<?php echo $task->getAssigneeAccountID() ?>" class="btn btn-link">
+                                <?php
+                                $assignee = new Accounts();
+                                $assignee->load($task->getAssigneeAccountID());
+                                echo $assignee->getFirstName()." ".$assignee->getLastName();
+                                ?>
+                            </a>
                         </td>
                         <td>
-                            <a href="ViewAccount.php?accountid=<?php echo $task->getReporterAccountID() ?>" class="btn btn-link"><?php echo $task->getReporterAccountID() ?></a>
+                            <a href="ViewAccount.php?accountid=<?php echo $task->getReporterAccountID() ?>" class="btn btn-link">
+                                <?php
+                                $reporter = new Accounts();
+                                $reporter->load($task->getReporterAccountID());
+                                echo $reporter->getFirstName()." ".$reporter->getLastName();
+                                ?>
+                            </a>
                         </td>
                         <td>
-                            <a href="ViewProject.php?projectid=<?php echo $task->getProjectID() ?>" class="btn btn-link"><?php echo $task->getProjectID() ?></a>
+                            <a href="ViewProject.php?projectid=<?php echo $task->getProjectID() ?>" class="btn btn-link">
+                                <?php
+                                $project = new Projects();
+                                $project->load($task->getProjectID());
+                                echo $project->getProjectName();
+                                ?>
+                            </a>
                         </td>
                         <td>
-                            <a class="btn btn-link"><?php echo $task->getStatusTypeID() ?></a>
+                            <a class="btn btn-link">
+                                <?php echo $task->getStatusTypeID() ?>
+                            </a>
                         </td>
                         <td>
-                            <a class="btn btn-link"><?php echo $task->getPriorityTypeID() ?></a>
+                            <a class="btn btn-link">
+                                <?php echo $task->getPriorityTypeID() ?>
+                            </a>
                         </td>
                         <td>
-                            <a class="btn btn-link"><?php echo $task->getTaskTypeID() ?></a>
+                            <a class="btn btn-link">
+                                <?php
+                                echo $task->getTaskTypeID() ?>
+                            </a>
                         </td>
                     </tr>
                     <?php
