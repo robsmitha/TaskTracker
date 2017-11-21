@@ -149,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             <?php } ?>
                 <div class="card">
-                  <div class="card-header">
+                  <div class="card-header"><i class="icon-briefcase m-auto"></i>
                       <?php if(isset($editprojectname)) { ?>
                           Edit <?php echo $editprojectname ?>
                       <?php } else { ?>
@@ -256,19 +256,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <div class="col-sm-8">
                                 <?php if(isset($editprojectname)) { ?>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <button class="btn btn-primary btn-block" type="submit">Update <?php echo $editprojectname ?></button>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <a class="btn btn-secondary btn-block" href="ViewProject.php?projectid=<?php echo $editprojectid  ?>">Cancel</a>
                                         </div>
                                     </div>
                                 <?php } else { ?>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <button class="btn btn-primary btn-block" type="submit">Create Project</button>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                         </div>
                                     </div>
@@ -283,7 +283,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
         </div>
         <div class="col-lg-4">
-          <?php include "projects.php" ?>
+            <div class="card">
+                <div class="card-header">
+                    Project Category Statistics
+                </div>
+                <div class="card-body">
+                    <?php
+                    $pcl = Projectcategorytypes::loadall();
+                    $x = 0;
+                    $y = 0;
+                    $z = 0;
+                    foreach($pcl as $pc){
+                        $p = new Projects();
+                        $p->load($pc->getProjectCategoryTypeID());
+                        if($p->getProjectCategoryID() == 1) //asp.net/C#
+                        {
+                            $x = $x + 1;
+                        }
+                        if($p->getProjectCategoryID() == 2) //php/mysql
+                        {
+                            $y = $y + 1;
+                        }
+                        if($p->getProjectCategoryID() == 3) //html/css
+                        {
+                            $z = $z + 1;
+                        }
+                    }
+                    ?>
+                    <div id="donut-example"></div>
+                    <script>
+                        Morris.Donut({
+                            element: 'donut-example',
+                            data: [
+                                {label: "ASP.NET/C#", value: <?php echo $x; ?>},
+                                {label: "PHP/MySQL", value: <?php echo $y; ?>},
+                                {label: "HTML/CSS", value: <?php echo $z; ?>}
+                            ]
+                        });
+                    </script>
+                </div>
+            </div>
         </div>
       </div>
       

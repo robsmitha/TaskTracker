@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 <?php } ?>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header"><i class="icon-organization m-auto"></i>
                         <?php if(isset($editroleid)) { ?>
                             <div class="row">
                                 <div class="col-sm-9">
@@ -153,10 +153,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 <?php if(isset($editroleid)) { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <a class="btn btn-secondary btn-block" href="ViewRole.php?roleid=<?php echo $editroleid ?>">Cancel</a>
                                             </div>
                                         </div>
@@ -164,10 +164,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 <?php } else { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit" onsubmit="">Create Role</button>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                             </div>
                                         </div>
@@ -180,7 +180,57 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
             <div class="col-lg-4">
-                <?php include "roles.php" ?>
+                <div class="card">
+                    <div class="card-header">
+                        Role To Permission Statistics
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        $rtpl = Rolestopermissions::loadall();
+                        $v = 0;
+                        $w = 0;
+                        $x = 0;
+                        $y = 0;
+                        $z = 0;
+                        foreach($rtpl as $r){
+
+                            if($r->getRoleID() == 1)
+                            {
+                                $v = $v + 1;
+                            }
+                            if($r->getRoleID() == 2)
+                            {
+                                $w = $w + 1;
+                            }
+                            if($r->getRoleID() == 3)
+                            {
+                                $x = $x + 1;
+                            }
+                            if($r->getRoleID() == 4)
+                            {
+                                $y = $y + 1;
+                            }
+                            if($r->getRoleID() == 5)
+                            {
+                                $z = $z + 1;
+                            }
+                        }
+                        ?>
+                        <div id="donut-example"></div>
+                        <script>
+                            Morris.Donut({
+                                element: 'donut-example',
+                                data: [
+                                    {label: "Administrator", value: <?php echo $v; ?>},
+                                    {label: "Developer", value: <?php echo $w; ?>},
+                                    {label: "Project Manager", value: <?php echo $x; ?>},
+                                    {label: "Quality Assurance", value: <?php echo $y; ?>},
+                                    {label: "Client Role", value: <?php echo $z; ?>},
+                                ]
+                            });
+                        </script>
+                    </div>
+                </div>
              </div>
         </div>
 

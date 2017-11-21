@@ -185,7 +185,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header"><i class="icon-user m-auto"></i>
                         <?php if(isset($editaccountid)) { ?>
                             Edit Account
                         <?php } else { ?>
@@ -254,11 +254,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                             <div class="form-group">
                                 <?php if(isset($editaccountid)) { ?>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary btn-block btn-lg" type="submit">Save Changes</button>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <a class="btn btn-primary btn-secondary btn-block" href="ViewAccount.php?accountid=<?php echo $editaccountid; ?>">Back to Account</a>
+                                        <div class="col-sm-4">
+                                            <a class="btn btn-primary btn-secondary btn-block btn-lg" href="ViewAccount.php?accountid=<?php echo $editaccountid; ?>">Back to Account</a>
                                         </div>
                                     </div>
 
@@ -266,7 +267,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                                     <div class="row">
                                         <div class="col-sm-4"></div>
                                         <div class="col-sm-4">
-                                            <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-user-plus"></i> Create Account</button>
+                                            <button class="btn btn-primary btn-block btn-lg" type="submit"><i class="fa fa-user-plus"></i> Create Account</button>
                                         </div>
                                     </div>
                                 <?php } ?>

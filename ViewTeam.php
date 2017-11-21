@@ -60,7 +60,7 @@ $team->load($teamid);
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="text-left">
-                                    <?php echo $team->getName(); ?>
+                                    <h3><?php echo $team->getName(); ?></h3>
                                 </div>
                             </div>
                             <div class="col-sm-3">

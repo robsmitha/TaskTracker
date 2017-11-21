@@ -87,7 +87,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </li>
         </ol>
         <?php if(isset($AccountSearchList)) { ?>
-            <table class="table table-striped">
+            <script>
+                $( document ).ready(function() {
+                    if ($(window).width() < 769) {
+                        $("#gridSearchResults").addClass("table-responsive");
+                    }
+                });
+            </script>
+            <table id="gridSearchResults" class="table table-striped">
                 <thead class="">
                 <tr>
                     <th scope="col">Account ID</th>
@@ -120,7 +127,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                             <a href="ViewAccount.php?accountid=<?php echo $account->getAccountID() ?>" class="btn btn-link"><?php echo $account->getDateOfBirth() ?></a>
                         </td>
                         <td>
-                            <a href="ViewAccount.php?accountid=<?php echo $account->getAccountID() ?>" class="btn btn-link"><?php echo $account->getRoleID() ?></a>
+                            <a href="ViewAccount.php?accountid=<?php echo $account->getAccountID() ?>" class="btn btn-link">
+                                <?php
+                                $r = new Roles();
+                                $r->load($account->getRoleID());
+                                echo $r->getRole();
+                                ?>
+                            </a>
                         </td>
                         <td>
                             <a href="ViewAccount.php?accountid=<?php echo $account->getAccountID() ?>" class="btn btn-link"><?php echo $account->getLocation() ?></a>
@@ -133,10 +146,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </table>
         <?php } ?>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-search"></i> Search Accounts
+                        <i class="icon-people m-auto"></i> Search Accounts
                     </div>
                     <div class="card-body">
 
@@ -238,21 +251,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                 <?php if(isset($AccountSearchList)) { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit">Search Again</button>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <a class="btn btn-secondary btn-block" href="SearchTasks.php">Clear Search</a>
+                                            <div class="col-6">
+                                                <a class="btn btn-secondary btn-block" href="SearchAccounts.php">Clear Search</a>
                                             </div>
                                         </div>
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit">Search</button>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                             </div>
                                         </div>
@@ -264,6 +277,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                         </form>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+
             </div>
         </div>
     </div>

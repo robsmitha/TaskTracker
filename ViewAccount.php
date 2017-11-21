@@ -88,15 +88,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-9">
                                 <div class="text-left">
                                     <div class="text-left">
                                         <img src="<?php echo $imgurl; ?>" class="rounded" alt="<?php echo $accountfullname; ?>" title="<?php echo $accountfullname; ?>" style="height: 75px;">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <a class="btn btn-secondary pull-right" href="CreateAccount.php?cmd=edit&accountid=<?php echo $account->getAccountID() ?>">Update Account</a>
+                            <div class="col-3">
+                                <a class="btn btn-secondary pull-right" href="CreateAccount.php?cmd=edit&accountid=<?php echo $account->getAccountID() ?>"><i class="icon-note m-auto"></i> Update Account</a>
                             </div>
                         </div>
 
@@ -183,11 +183,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-9">
                                 <?php echo $account->getFirstName(); ?> Task Statistics
                             </div>
-                            <div class="col-sm-3">
-                                <a class="btn btn-secondary pull-right" href="CreateTask.php">Create Task</a>
+                            <div class="col-3">
+                                <a class="btn btn-secondary pull-right" href="CreateTask.php"><i class="icon-plus m-auto"></i> Create Task</a>
                             </div>
                         </div>
                     </div>
@@ -198,7 +198,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 element: 'donut-example',
                                 data: [
                                     {label: "Open Tasks", value: <?php echo $numOfOpenTasks; ?>},
-                                    {label: "Ready For Testing Tasks", value: <?php echo $numOfReadyForTestingTasks; ?>},
+                                    {label: "Testing Tasks", value: <?php echo $numOfReadyForTestingTasks; ?>},
                                     {label: "Closed Tasks", value: <?php echo $numOfClosedTasks; ?>}
                                 ]
                             });

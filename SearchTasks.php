@@ -129,7 +129,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </li>
         </ol>
         <?php if(isset($TaskSearchList)) { ?>
-            <table class="table table-striped">
+            <script>
+                $( document ).ready(function() {
+                    if ($(window).width() < 769) {
+                        $("#gridSearchResults").addClass("table-responsive");
+                    }
+                });
+            </script>
+            <table id="gridSearchResults" class="table table-striped">
                 <thead class="">
                 <tr>
                     <th scope="col">Task ID</th>
@@ -182,18 +189,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                         </td>
                         <td>
                             <a class="btn btn-link">
-                                <?php echo $task->getStatusTypeID() ?>
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn btn-link">
-                                <?php echo $task->getPriorityTypeID() ?>
+                                <?php
+                                $statustype= new Statustypes();
+                                $statustype->load($task->getStatusTypeID());
+                                echo $statustype->getStatus();
+                                ?>
                             </a>
                         </td>
                         <td>
                             <a class="btn btn-link">
                                 <?php
-                                echo $task->getTaskTypeID() ?>
+                                $priority = new Prioritytypes();
+                                $priority->load($task->getPriorityTypeID());
+                                echo $priority->getPriorityType();
+                                ?>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-link">
+                                <?php
+                                $tasktype = new Tasktypes();
+                                $tasktype->load($task->getTaskTypeID());
+                                echo $tasktype->getTaskType();
+                                ?>
                             </a>
                         </td>
                     </tr>
@@ -204,10 +222,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </table>
         <?php } ?>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-search"></i> Search Tasks
+                        <i class="icon-magnifier"></i> Search Tasks
                     </div>
                     <div class="card-body">
 
@@ -468,10 +486,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                     <?php if(isset($TaskSearchList)) { ?>
                                         <div class="col-sm-8">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-6">
                                                     <button class="btn btn-primary btn-block" type="submit">Seach Again</button>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-6">
                                                     <a class="btn btn-secondary btn-block" href="SearchTasks.php">Clear Search</a>
                                                 </div>
                                             </div>
@@ -479,10 +497,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                     <?php } else { ?>
                                         <div class="col-sm-8">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-6">
                                                     <button class="btn btn-primary btn-block" type="submit">Search</button>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-6">
                                                     <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                                 </div>
                                             </div>
@@ -492,6 +510,45 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                 </div>
 
                             </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-area-chart"></i> Task Creation Statistics
+                    </div>
+                    <div class="card-body">
+                        <div id="line-example" style="height: 250px;"></div>
+                        <script>
+                            Morris.Line({
+                                element: 'line-example',
+                                data: [
+                                    <?php
+                                    $tl = Tasks::loadall();
+                                    $tid = 0;
+                                    foreach ($tl as $t){
+                                    $tid = $t->getTaskID();
+                                    $createdate = $t->getCreateDate();
+                                    ?>
+                                    { y: '<?php echo $createdate; ?>', a: <?php echo $tid; ?> },
+                                    <?php
+                                    }
+                                    ?>
+                                ],
+                                xkey: 'y',
+                                ykeys: ['a'],
+                                labels: ['Series A'],
+                                fillOpacity: 0.4,
+                                hideHover: 'auto',
+                                behaveLikeLine: true,
+                                resize: true,
+                                pointFillColors: ['#ffffff'],
+                                pointStrokeColors: ['black'],
+                                lineColors: ['red', 'blue'],
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

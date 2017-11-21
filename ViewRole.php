@@ -62,7 +62,7 @@ $role->load($roleid);
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="text-left">
-                                    <?php echo $role->getRole(); ?>
+                                    <h3><?php echo $role->getRole(); ?></h3>
                                 </div>
                             </div>
                             <div class="col-sm-3">

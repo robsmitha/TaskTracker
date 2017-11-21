@@ -82,7 +82,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </li>
         </ol>
         <?php if(isset($ProjectSearchList)) { ?>
-            <table class="table table-striped">
+            <script>
+                $( document ).ready(function() {
+                    if ($(window).width() < 769) {
+                        $("#gridSearchResults").addClass("table-responsive");
+                    }
+                });
+            </script>
+            <table id="gridSearchResults" class="table table-striped">
                 <thead class="">
                 <tr>
                     <th scope="col">Project ID</th>
@@ -124,10 +131,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
             </table>
         <?php } ?>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-search"></i> Search Accounts
+                        <i class="icon-folder m-auto"></i> Search Project
                     </div>
                     <div class="card-body">
 
@@ -233,10 +240,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                 <?php if(isset($ProjectSearchList)) { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit">Search Again</button>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <a class="btn btn-secondary btn-block" href="SearchProjects.php">Clear Search</a>
                                             </div>
                                         </div>
@@ -244,10 +251,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                                 <?php } else { ?>
                                     <div class="col-sm-8">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <button class="btn btn-primary btn-block" type="submit">Search</button>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-6">
                                                 <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                             </div>
                                         </div>
@@ -257,6 +264,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST")    //check for postback (submit)
                             </div>
 
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        Project Category Statistics
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        $pcl = Projectcategorytypes::loadall();
+                        $x = 0;
+                        $y = 0;
+                        $z = 0;
+                        foreach($pcl as $pc){
+                            $p = new Projects();
+                            $p->load($pc->getProjectCategoryTypeID());
+                            if($p->getProjectCategoryID() == 1) //asp.net/C#
+                            {
+                                $x = $x + 1;
+                            }
+                            if($p->getProjectCategoryID() == 2) //php/mysql
+                            {
+                                $y = $y + 1;
+                            }
+                            if($p->getProjectCategoryID() == 3) //html/css
+                            {
+                                $z = $z + 1;
+                            }
+                        }
+                        ?>
+                        <div id="donut-example"></div>
+                        <script>
+                            Morris.Donut({
+                                element: 'donut-example',
+                                data: [
+                                    {label: "ASP.NET/C#", value: <?php echo $x; ?>},
+                                    {label: "PHP/MySQL", value: <?php echo $y; ?>},
+                                    {label: "HTML/CSS", value: <?php echo $z; ?>}
+                                ]
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

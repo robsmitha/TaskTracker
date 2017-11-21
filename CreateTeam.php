@@ -120,7 +120,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 <?php } ?>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header"><i class="icon-people m-auto"></i>
                         <?php if(isset($editteamid)) { ?>
                             <div class="row">
                                 <div class="col-sm-9">

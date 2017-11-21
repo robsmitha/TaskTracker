@@ -59,7 +59,7 @@ $session_roleid = SessionManager::getRoleID();
                       ?>
                       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Project">
                           <a class="nav-link" href="CreateProject.php">
-                              <i class="icon-book-open m-auto"></i>
+                              <i class="icon-briefcase m-auto"></i>
                               <span class="nav-link-text">Create Project</span>
                           </a>
                       </li>

@@ -123,7 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             $notification->setSeen(0);
             $notification->setTaskID($_POST["hftaskid"]);
             $notification->setProjectID($_POST["hfprojectid"]);
-            $notification->setCommentID($comment->getTaskID());
+            $notification->setCommentID($comment->getCommentID());
             $notification->save();
 
             $id = $comment->getTaskID();
@@ -293,7 +293,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         </script>
 						<form method="post" class="btn-group pull-right">
                             <input id="hfstatustypeid" type="hidden" name="hfstatustypeid">
-                            <input type="hidden" name="hftaskid" value="<?php echo $taskid; ?>">
+                            <input type="hidden" name="hftaskid" value="<?php echo $task->getTaskID(); ?>">
                             <input type="hidden" name="hfaccountid" value="<?php echo $task->getAssigneeAccountID() ?>">
                             <input type="hidden" name="hfprojectid" value="<?php echo $task->getProjectID(); ?>">
                             <a class="btn btn-secondary" href="CreateTask.php?cmd=edit&taskid=<?php echo $taskid ?>">Edit</a>
@@ -379,6 +379,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 					<p><?php echo $task->getDescription(); ?></p>
 			    </div>
                 <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="CommentForm" class="form-group" method="post" onsubmit="return doValidation();">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <textarea id="inputDescription" type="text" class="form-control" rows="4" name="commentArea" placeholder="Leave a comment"><?php if(isset($editcommentdesc)) echo $editcommentdesc; ?></textarea>
+                                            <button type="submit" name="<?php if(isset($editcommentdesc)) echo "EditComment"; else echo "PostComment"; ?>" class="input-group-addon btn btn-primary"><i class="fa fa-comment"></i>Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="hfcommentid" value="<?php if(isset($editcommentid)) echo $editcommentid; else echo 0; ?>">
+                                <input type="hidden" name="hftaskid" value="<?php echo $task->getTaskID(); ?>">
+                                <input type="hidden" name="hfaccountid" value="<?php echo $accountid ?>">
+                                <input type="hidden" name="hfprojectid" value="<?php echo $task->getProjectID(); ?>">
+                            </form>
+
+                        </div>
+                    </div>
+                    <hr>
                     <!--comments-->
                     <div class="row">
                         <div class="comments col-md-12" id="comments">
@@ -394,7 +414,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 <!-- comment -->
                                 <div class="comment mb-2 row">
                                     <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                                        <a href=""><img class="mx-auto rounded-circle img-fluid" src="<?php echo $imgurl ?>" alt="avatar"></a>
+                                        <a href=""><img class="mx-auto rounded-circle img-fluid img-avatar" src="<?php echo $imgurl ?>" alt="avatar"></a>
                                     </div>
                                     <div class="comment-content col-md-11 col-sm-10">
                                         <form method="post" class="pull-right">
@@ -439,25 +459,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             ?>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <form id="CommentForm" class="form-group" method="post" onsubmit="return doValidation();">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <textarea id="inputDescription" type="text" class="form-control" rows="4" name="commentArea" placeholder="Leave a comment"><?php if(isset($editcommentdesc)) echo $editcommentdesc; ?></textarea>
-                                            <button type="submit" name="<?php if(isset($editcommentdesc)) echo "EditComment"; else echo "PostComment"; ?>" class="input-group-addon btn btn-primary"><i class="fa fa-comment"></i>Comment</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="hfcommentid" value="<?php if(isset($editcommentid)) echo $editcommentid; else echo 0; ?>">
-                                <input type="hidden" name="hftaskid" value="<?php echo $task->getTaskID(); ?>">
-                                <input type="hidden" name="hfaccountid" value="<?php echo $accountid ?>">
-                                <input type="hidden" name="hfprojectid" value="<?php echo $task->getProjectID(); ?>">
-                            </form>
 
-                        </div>
-                    </div>
                 </div>
 			</div>
         </div>

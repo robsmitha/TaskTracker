@@ -72,13 +72,13 @@ $projectleadaccount->load($project->getProjectLeadAccountID());	//leader obj
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-9">
                                 <div class="text-left">
                                     <?php $projectimgurl = $project->getImgURL(); $projectname = $project->getProjectName(); ?>
                                     <img src="<?php echo $projectimgurl; ?>" class="rounded" alt="<?php echo $projectname; ?>" title="<?php echo $projectname; ?>" style="height: 75px;">
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-3">
                                     <a class="btn btn-secondary pull-right" href="CreateProject.php?cmd=edit&projectid=<?php echo $projectid ?>">Update Project</a>
                             </div>
                         </div>
@@ -139,10 +139,10 @@ $projectleadaccount->load($project->getProjectLeadAccountID());	//leader obj
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-9">
                                 <?php echo $projectname; ?> Task Statistics
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-3">
                                 <a class="btn btn-secondary pull-right" href="CreateTask.php">Create Task</a>
                             </div>
                         </div>

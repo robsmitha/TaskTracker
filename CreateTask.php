@@ -161,7 +161,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                 </div>
               <?php } ?>
                 <div class="card">
-                  <div class="card-header">
+                  <div class="card-header"><i class="icon-plus m-auto"></i>
                       <?php if(isset($edittaskid)) { ?>
                           Edit Task ID: <?php echo $edittaskid ?>
                       <?php } else { ?>
@@ -338,10 +338,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                             <?php if(isset($edittaskid)) { ?>
                                 <div class="col-sm-8">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <button class="btn btn-primary btn-block" id="isEdit" onclick="return doSubmit(this.id);" type="submit">Save Changes</button>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <a class="btn btn-secondary btn-block" href="ViewTask.php?taskid=<?php echo $edittaskid ?>">Cancel</a>
                                         </div>
                                     </div>
@@ -349,10 +349,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                             <?php } else { ?>
                                 <div class="col-sm-8">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <button class="btn btn-primary btn-block" type="submit">Create Task</button>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <a class="btn btn-secondary btn-block" href="index.php">Cancel</a>
                                         </div>
                                     </div>
@@ -366,8 +366,42 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                 </div>
         </div>
         <div class="col-lg-4">
-
-          <?php include "tasks.php"; ?>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-area-chart"></i> Task Creation Statistics
+                </div>
+                <div class="card-body">
+                    <div id="line-example" style="height: 250px;"></div>
+                    <script>
+                        Morris.Line({
+                            element: 'line-example',
+                            data: [
+                                <?php
+                                $tl = Tasks::loadall();
+                                $tid = 0;
+                                foreach ($tl as $t){
+                                $tid = $t->getTaskID();
+                                $createdate = $t->getCreateDate();
+                                ?>
+                                { y: '<?php echo $createdate; ?>', a: <?php echo $tid; ?> },
+                                <?php
+                                }
+                                ?>
+                            ],
+                            xkey: 'y',
+                            ykeys: ['a'],
+                            labels: ['Series A'],
+                            fillOpacity: 0.4,
+                            hideHover: 'auto',
+                            behaveLikeLine: true,
+                            resize: true,
+                            pointFillColors: ['#ffffff'],
+                            pointStrokeColors: ['black'],
+                            lineColors: ['red', 'blue'],
+                        });
+                    </script>
+                </div>
+            </div>
         </div>
       </div>
 
