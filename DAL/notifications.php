@@ -315,4 +315,12 @@ class Notifications {
             //echo "No new notifications";
         }
     }
+
+    public static function clearnotificationsbyaccountid($paramAccountID) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_notifications_ClearNotificationsByAccountID(?)');
+        $stmt->bind_param('i', $paramAccountID);
+        $stmt->execute();
+    }
 }

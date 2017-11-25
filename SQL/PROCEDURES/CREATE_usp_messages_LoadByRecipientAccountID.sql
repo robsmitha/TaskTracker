@@ -14,7 +14,7 @@ BEGIN
 		`messages`.`Seen` AS `Seen`
 	FROM `messages`
 	WHERE 		`messages`.`RecipientAccountID` = paramAccountID
-	AND `messages`.`Seen` = 0
+	-- AND `messages`.`Seen` = 0
 	ORDER BY `messages`.`SentDate` DESC;
 END //
 DELIMITER ;

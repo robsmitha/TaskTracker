@@ -6,8 +6,6 @@ if(SessionManager::getAccountID() == 0)
 {
     header("location: login.php");
 }
-
-
 //Check Query
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
@@ -60,13 +58,16 @@ $role->load($roleid);
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <div class="text-left">
                                     <h3><?php echo $role->getRole(); ?></h3>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <a class="btn btn-secondary pull-right" href="CreateRole.php?cmd=edit&roleid=<?php echo $roleid ?>">Edit</a>
+                            <div class="col-sm-4">
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-secondary" href="CreateRole.php?cmd=edit&roleid=<?php echo $roleid ?>"><i class="icon-lock"></i> Manage Permissions</a>
+                                    <a class="btn btn-secondary" href="CreateRole.php?cmd=edit&roleid=<?php echo $roleid ?>">Edit</a>
+                                </div>
                             </div>
                         </div>
                     </div>

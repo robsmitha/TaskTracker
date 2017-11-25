@@ -88,15 +88,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">
                         <div class="row">
-                            <div class="col-9">
-                                <div class="text-left">
-                                    <div class="text-left">
-                                        <img src="<?php echo $imgurl; ?>" class="rounded" alt="<?php echo $accountfullname; ?>" title="<?php echo $accountfullname; ?>" style="height: 75px;">
-                                    </div>
+                            <div class="col-12">
+                                <img src="<?php echo $imgurl; ?>" class="rounded" alt="<?php echo $accountfullname; ?>" title="<?php echo $accountfullname; ?>" style="height: 75px;">
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-secondary" href="Messages.php"><i class="icon-envelope m-auto"></i> Messages</a>
+                                    <a class="btn btn-secondary pull-right" href="CreateAccount.php?cmd=edit&accountid=<?php echo $account->getAccountID() ?>"><i class="icon-settings m-auto"></i> Update Account</a>
                                 </div>
-                            </div>
-                            <div class="col-3">
-                                <a class="btn btn-secondary pull-right" href="CreateAccount.php?cmd=edit&accountid=<?php echo $account->getAccountID() ?>"><i class="icon-note m-auto"></i> Update Account</a>
                             </div>
                         </div>
 

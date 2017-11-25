@@ -27,6 +27,12 @@ $session_roleid = SessionManager::getRoleID();
                   <span class="nav-link-text">My Account</span>
               </a>
           </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Update Account Information">
+              <a class="nav-link" href="Messages.php">
+                  <i class="icon-envelope m-auto"></i>
+                  <span class="nav-link-text">Message Inbox</span>
+              </a>
+          </li>
           <?php
           if($session_roleid != 0) {
 
@@ -187,7 +193,7 @@ $session_roleid = SessionManager::getRoleID();
               }
               ?>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item small" href="#">View all messages</a>
+            <a class="dropdown-item small" href="Messages.php">View all messages</a>
           </div>
         </li>
           <?php
@@ -211,7 +217,7 @@ $session_roleid = SessionManager::getRoleID();
             </span>
           </a>
           <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">New Alerts:</h6>
+            <h6 class="dropdown-header">New Alerts: ></h6>
               <?php
               $NotificationsList = Notifications::loadbyaccountid($session_accountid);
               $notificationCount = 0;
@@ -319,4 +325,5 @@ $session_roleid = SessionManager::getRoleID();
         $("#aAccounts").removeClass('active');
         $("#aProjects").removeClass('active');
     }
+
 </script>

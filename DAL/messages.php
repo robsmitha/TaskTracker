@@ -276,4 +276,25 @@ class Messages {
             //echo "No new messages";
         }
     }
+    public static function loadmessagesbysenderrecipient($paramSenderAccountID, $paramRecipientAccountID) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_messages_LoadMessageFeed(?,?)');
+        $stmt->bind_param('ii', $paramSenderAccountID, $paramRecipientAccountID);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if (!$result) die($conn->error);
+        if ($result->num_rows > 0) {
+            $arr = array();
+            while ($row = $result->fetch_assoc()) {
+                $messages = new Messages($row['MessageID'],$row['Description'],$row['SenderAccountID'],$row['RecipientAccountID'],$row['SentDate'],$row['Seen']);
+                $arr[] = $messages;
+            }
+            return $arr;
+        }
+        else {
+            //echo "No new messages";
+        }
+    }
 }

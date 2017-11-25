@@ -56,10 +56,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                   </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-6">
                             <button class="btn btn-primary btn-block" type="submit">Login</button>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-6">
                             <a class="btn btn-secondary btn-block" href="register.php">Register</a>
                         </div>
                     </div>
