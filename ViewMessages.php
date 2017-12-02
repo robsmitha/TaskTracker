@@ -55,7 +55,6 @@ $MessageList = Messages::loadmessagesbysenderrecipient($senderAccountObj->getAcc
         </ol>
 
         <div class="row">
-            <div class="col-lg-2"></div>
             <div class="col-lg-8">
                 <div class="card">
                     <div class="bg-light" style="padding: 12px;">

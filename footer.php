@@ -37,8 +37,7 @@
 <script>
     function logout(e) {
         if(e == "logout"){
-            var kill = "SessionManager::ResetSession();";
-            window.location = "login.php"
+            window.location = "logout.php"
         }
     }
 

@@ -94,8 +94,10 @@ $alertmsg = "This product is still under active development, but feel free to tr
                             <!-- Example Social Card-->
                             <div class="card mb-3">
                                 <div class="card-header">
-                                    <a href="ViewTask.php?taskid=<?php echo $task->getTaskID(); ?>" alt="<?php echo $project->getProjectName(); ?>">
-                                        <img class="rounded mx-auto d-block card-img-top img-fluid" src="<?php echo $project->getImgURL(); ?>" alt="<?php echo $project->getProjectName(); ?>">
+                                    <a href="ViewTask.php?taskid=<?php echo $task->getTaskID(); ?>" title="<?php echo $task->getTaskName(); ?>">
+                                        <h3>
+                                            <?php echo $task->getTaskName(); ?>
+                                        </h3>
                                     </a>
                                 </div>
                                 <div class="card-body small bg-faded">
@@ -211,7 +213,7 @@ $alertmsg = "This product is still under active development, but feel free to tr
                         element: 'statustypebarchart',
                         data: [
                             { y: 'Open', a: <?php echo $numOfOpenTasks ?>},
-                            { y: 'Ready For Testing', a:<?php echo $numOfReadyForTestingTasks ?>},
+                            { y: 'Testing', a:<?php echo $numOfReadyForTestingTasks ?>},
                             { y: 'Reopened', a: <?php echo $numOfReopenedTasks ?>},
                             { y: 'Closed', a: <?php echo $numOfClosedTasks ?> }
                         ],
@@ -221,7 +223,7 @@ $alertmsg = "This product is still under active development, but feel free to tr
                         barColors: function (row, series, type) {
                             console.log("--> "+row.label, series, type);
                             if(row.label == "Open") return "#593196";
-                            else if(row.label == "Ready For Testing") return "#EFA31D";
+                            else if(row.label == "Testing") return "#EFA31D";
                             else if(row.label == "Reopened") return "#13B955";
                             else if(row.label == "Closed") return "#FC3939";
                         },

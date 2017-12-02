@@ -33,6 +33,12 @@ $session_roleid = SessionManager::getRoleID();
                   <span class="nav-link-text">Message Inbox</span>
               </a>
           </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administrator functionality">
+              <a class="nav-link" href="Administration.php">
+                  <i class="icon-envelope m-auto"></i>
+                  <span class="nav-link-text">Administration</span>
+              </a>
+          </li>
           <?php
           if($session_roleid != 0) {
 
@@ -217,7 +223,7 @@ $session_roleid = SessionManager::getRoleID();
             </span>
           </a>
           <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">New Alerts: ></h6>
+            <h6 class="dropdown-header">New Alerts: </h6>
               <?php
               $NotificationsList = Notifications::loadbyaccountid($session_accountid);
               $notificationCount = 0;
@@ -247,7 +253,12 @@ $session_roleid = SessionManager::getRoleID();
                             <strong>
                               <i class="fa fa-long-arrow-up fa-fw"></i><?php echo $notificationtype->getNotification(); ?></strong>
                           </span>
-                          <span class="small float-right text-muted"><?php echo $notification->getCreateDate(); ?></span>
+                          <span class="small float-right text-muted">
+                              <?php
+
+                              $date = date("l, F d y h:i:s",strtotime($notification->getCreateDate()));
+                              echo $date;
+                              ?></span>
                           <div class="dropdown-message small"><?php echo $notificationtype->getDescription(); ?></div>
                       </a>
                   <form class="notification-form" id="FORM_<?php echo $notification->getNotificationID() ?>">
@@ -259,7 +270,7 @@ $session_roleid = SessionManager::getRoleID();
               ?>
 
 
-            <a class="dropdown-item small" href="#">View all alerts</a>
+            <a class="dropdown-item small" href="ViewNotifications.php">View all alerts</a>
           </div>
         </li>
         <li class="nav-item">

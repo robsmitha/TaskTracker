@@ -63,6 +63,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                             <a class="btn btn-secondary btn-block" href="register.php">Register</a>
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="forgot-password.php" class="btn btn-link btn-block">Forgot Password?</a>
+                        </div>
+                    </div>
                 </form>
           </div>
     </div>

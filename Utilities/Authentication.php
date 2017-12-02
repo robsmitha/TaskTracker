@@ -39,6 +39,20 @@ class Authentication
 
         return $account;
     }
+    public static function updatePassword($accountID,$paramPassword)
+    {
+        // Hash the new password and update the user
+
+        $options = [
+            'cost' => 10,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+        ];
+
+        $hash = password_hash($paramPassword, PASSWORD_BCRYPT, $options);
+        $account = new Accounts($accountID);
+        $account->setPassword($hash);
+        $account->save();
+    }
 }
 
 ?>

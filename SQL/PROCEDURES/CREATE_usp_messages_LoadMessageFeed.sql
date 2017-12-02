@@ -25,8 +25,8 @@ BEGIN
 		`messages`.`RecipientAccountID` AS `RecipientAccountID`,
 		`messages`.`SentDate` AS `SentDate`,
 		`messages`.`Seen` AS `Seen`
-	WHERE `messages`.`SenderAccountID` = 2
-	AND `messages`.`RecipientAccountID` = 1
+	WHERE `messages`.`SenderAccountID` in (paramSenderAccountID,paramRecipientAccountID)
+	AND `messages`.`RecipientAccountID` in (paramSenderAccountID,paramRecipientAccountID)
 	ORDER BY `messages`.`SentDate` DESC;
 END //
 DELIMITER ;

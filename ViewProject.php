@@ -91,7 +91,7 @@ $projectleadaccount->load($project->getProjectLeadAccountID());	//leader obj
                                 <b>Project Type: </b><?php echo $projectcategorytype->getProjectCategoryType(); ?>
                             </div>
                             <div class="col-sm-6">
-                                <b>Project Lead: </b><?php echo $projectleadaccount->getFirstName(). " " .$projectleadaccount->getLastName(); ?><br>
+                                <b>Project Lead: </b><a href="ViewAccount.php?accountid=<?php echo $projectleadaccount->getAccountID() ?>"><?php echo $projectleadaccount->getFirstName(). " " .$projectleadaccount->getLastName(); ?></a>  <br>
                             </div>
                         </div>
                         <hr>

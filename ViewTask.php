@@ -376,7 +376,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 					</div>
 					<hr>
 					<h4>Description</h4>
-					<p><?php echo $task->getDescription(); ?></p>
+					<p><?php echo nl2br($task->getDescription()); ?></p>
 			    </div>
                 <div class="card-footer">
                     <div class="row">
@@ -467,8 +467,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="card bg-light">
                 <div class="card-body">
                     <b><i class="fa fa-users"></i> People</b><br>
-                    <b>Reported By: </b><?php echo $reporter->getFirstName(). " " .$reporter->getLastName(); ?><br>
-                    <b>Assigned To: </b><?php echo $assignee->getFirstName(). " " .$assignee->getLastName();  ?><br>
+                    <b>Reported By: </b><a href="ViewAccount.php?accountid=<?php echo $reporter->getAccountID() ?>"><?php echo $reporter->getFirstName(). " " .$reporter->getLastName(); ?></a><br>
+                    <b>Assigned To: </b><a href="ViewAccount.php?accountid=<?php echo $assignee->getAccountID() ?>"><?php echo $assignee->getFirstName(). " " .$assignee->getLastName();  ?></a>  <br>
                     <hr>
                     <b><i class="fa fa-calendar"></i> Dates</b><br>
                     <b>Create Date: </b><?php echo $task->getCreateDate(); ?><br>

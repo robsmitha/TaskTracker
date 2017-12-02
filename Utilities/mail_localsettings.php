@@ -1,10 +1,10 @@
 <?php
 /**
- * Author: Jacob Mills
- * Date: 11/2/2017
- * Description: This is a temporary file used for local development. This should not be used in production environments.
+ * Created by PhpStorm.
+ * User: robsm_5mj
+ * Date: 11/29/2017
+ * Time: 6:14 PM
  */
-
 $smtpHost = "smtp.gmail.com";
-$smtpUsername = "wmcleads@gmail.com";
+$smtpUsername = "";
 $smtpPassword = "";
