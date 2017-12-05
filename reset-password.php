@@ -28,6 +28,7 @@ if($AccountID == 0){
 }
 else{
     $account = new Accounts();
+    $account->load($AccountID);
 }
 
 

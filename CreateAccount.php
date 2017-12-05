@@ -8,6 +8,7 @@ include "DAL/notifications.php";
 include "DAL/notificationtypes.php";
 include "DAL/rolestopermissions.php";
 include "DAL/messages.php";
+include "DAL/roles.php";
 
 if(SessionManager::getAccountID() == 0)
 {
@@ -21,6 +22,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $_POST['exampleInputName'] == "" ? $returnValue = false : $name = $_POST['exampleInputName'];
     $_POST['exampleInputLastName'] == "" ? $returnValue = false : $lastname = $_POST['exampleInputLastName'];
     $_POST['exampleInputEmail1'] == "" ?  $returnValue = false : $email = $_POST['exampleInputEmail1'];
+
+    $_POST['ddlRole'] == 0 ?  $returnValue = false : $roleid = $_POST['ddlRole'];
 
     if(isset($_POST["hfaccountid"]) && $_POST["hfaccountid"] > 0){
 
@@ -70,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 if($accountid == $account->getAccountID()){
                     $account->setAccountID($account->getAccountID());
                     $account->setCreateDate($account->getCreateDate());
-                    $account->setRoleID($account->getRoleID());
+                    $account->setRoleID($roleid);
 
                     $account->setFirstName($name);
                     $account->setLastName($lastname);
@@ -96,9 +99,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             }
             else {
                 $currentDate = date('Y-m-d H:i:s');
-                $defaultRoleId = 1; // This corresponds to the Admin role
+                //$defaultRoleId = 1; // This corresponds to the Admin role
 
-                $account = Authentication::createAccount($name, $lastname, $email, $password,$bio, $defaultRoleId, $imgurl, $dateofbirth, $location, $currentDate);
+                $account = Authentication::createAccount($name, $lastname, $email, $password,$bio, $roleid, $imgurl, $dateofbirth, $location, $currentDate);
                 if ($account == null) {
                     // Something went wrong while attempting to create this user
                     $validationMsg = "An error occurred during the creation of this user account. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
@@ -148,6 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                 $editdateofbirth = $editaccount->getDateOfBirth();
                 $editbio = $editaccount->getBio();
                 $editcreatedate = $editaccount->getCreateDate();
+                $editroleid = $editaccount->getRoleID();
             }
             else
             {
@@ -207,9 +211,47 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input id="inputEmail" class="form-control" name="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?php if(isset($editemail)) echo $editemail; ?>">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input id="inputEmail" class="form-control" name="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?php if(isset($editemail)) echo $editemail; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="ddlRole">Role</label>
+                                    <select id="inputRole" name="ddlRole" class="form-control">
+                                        <?php
+                                        if(isset($editroleid))
+                                        {
+                                            $r = new Roles();
+                                            $r->load($editroleid);
+                                            echo "<option value='$editroleid'>";
+                                            echo $r->getRole();
+                                            echo "</option>";
+                                        }
+                                        else
+                                        {
+                                            echo '<option value="0">---Role---</option>';
+                                        }
+                                        $RoleList = Roles::loadall();
+                                        foreach($RoleList as $role)
+                                        {
+                                            if(isset($editroleid) && $role->getRoleID() == $editroleid)
+                                            {
+                                                //skip
+                                            }
+                                            else
+                                            {
+                                                $roleid = $role->getRoleID();
+                                                echo "<option value='$roleid'>";
+                                                echo $role->getRole();
+                                                echo "</option>";
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
                             <?php if(!isset($editaccountid)) { ?>
                                 <!-- Show password field for Create an Account-->

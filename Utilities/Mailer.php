@@ -12,7 +12,7 @@ class Mailer
     // This is for local purposes only! In hosted environments the db_settings.php file should be outside of the webroot, such as: include("/outside-webroot/db_settings.php");
     protected static function getMailSettings() { return "mail_localsettings.php"; }
 
-    public static function sendRegistrationEmail($recipientEmail,$newusername) {
+    public static function sendRegistrationEmail($recipientEmail) {
         include_once(self::getMailSettings());
 
         $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -32,7 +32,7 @@ class Mailer
             $mail->addReplyTo($smtpUsername, 'NoReply');
 
             //Content
-            $body = '<p>Greetings! An account was recently created on <a href="https://www.opendevtools.org">www.opendevtools.org</a> using this email address. Your username is: <b>' . $newusername . '</b></p>';
+            $body = '<p>Greetings! An account was recently created on <a href="https://tasktracker.opendevtools.org">www.tasktracker.opendevtools.org</a> using this email address</p>';
             $body = $body . '<br/><p>If you believe you have received this message in error, please contact our <a href="mailto:info@opendevtools.org">Site Administrators</a>.</p>';
 
             $mail->isHTML(true);                                  // Set email format to HTML

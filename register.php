@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 SessionManager::setAccountID($account->getAccountID());
                 SessionManager::setRoleID($account->getRoleID());
                 // Send registration email
-                Mailer::sendRegistrationEmail($account->getEmail());
+                //Mailer::sendRegistrationEmail($account->getEmail());
                 // Redirect to Dashboard
                 header("location: index.php");
             }

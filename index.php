@@ -138,7 +138,12 @@ $alertmsg = "This product is still under active development, but feel free to tr
                                 </div>
                                 <hr class="my-0">
 
-                                <div class="card-footer small text-muted">Posted <?php echo $comment->getCreateDate(); ?></div>
+                                <div class="card-footer small text-muted">Posted
+                                    <?php
+                                    $date = date("l, F d y h:i:s",strtotime($comment->getCreateDate()));
+                                    echo $date;
+                                    ?>
+                                </div>
                             </div>
                             <?php
                             $counter = $counter + 1;
